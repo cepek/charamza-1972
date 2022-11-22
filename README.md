@@ -1,12 +1,11 @@
-# charamza-1972
-Charamza, F. (1972). Řešení základních úloh vyrovnávacího počtu ortogonalizační metodou.
+# Řešení základních úloh vyrovnávacího počtu ortogonalizační metodou
+
+## František Charamza, Praha 1972
 
 
-##  Abstract
+###  Abstract
 
-### The Solution of Fundamental Problems of Least Squares Adjustment by Orthogonalization
-
-### František Charamza
+#### The Solution of Fundamental Problems of Least Squares Adjustment by Orthogonalization
 
 The monography focuses on the derivation and detailed
 analyses of a numerically stable orthogonalization algorithm
