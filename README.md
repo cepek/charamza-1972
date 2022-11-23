@@ -28,7 +28,7 @@ those with singular or rectangular matrices respectively. It
 may be applied in solving homogeneous systems as well.
 
 Besides theoretical considerations, the monography also
-provides detailed programming documentation of the ORTCN 3
+provides detailed programming documentation of the ORTON 3
 procedure, which defines the ORTON algorithm in the language ALGOL, as
 well as ORTON 3 - ZKOUŠKA 1 programme, which illustrates the
 possibility of using the ORTON 3 procedure in practise. Both
