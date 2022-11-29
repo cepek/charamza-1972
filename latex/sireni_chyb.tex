@@ -1,0 +1,474 @@
+Prvky \orig{82} matice $A$, kterou podrobujeme ortogonalizaci, bývají
+zpravidla z různých příčin zkresleny chybami. Určitých chyb se
+dopouštíme např. při linearizaci úloh popsaných nelineárními
+definičními rovnicemi, dále tehdy, jsou-li koeficienty definičních
+rovnic odvozeny z měřených hodnot nebo konečně i při zobrazení
+koeficientů v počítači. S poslední uvedenou možností je třeba obecně
+počítat i v těch případech, kdy známe přesné hodnoty prvků matice $A.$
+Chybám matice $A$ odpovídají potom chyby matice $W$ získané
+\name{GRAMOVOU-SCHMIDTOVOU} ortogonalizací. Přitom velikost těchto
+chyb není v jednoduché závislosti na velikosti chyb matice $A$, ale je
+význámně ovlivněna i charakterem (podmíněností) řešené vyrovnávací
+úlohy. Není jistě třeba zdůrazňovat, že při numerických výpočtech má
+velký praktický význam znalost velikosti chyb tohoto druhu, tj. chyb
+determinovaných přesností vstupních dat a konfigurací úlohy. Pokusíme
+se proto najít některé odhady, které by pomocí numerických
+charakteristik, získaných v průběhu výpočtu, umožnily posoudit
+přesnost výsledků ortogonalizace.
+
+
+Předpokládejme nejprve, že sloupce $a_i$ matice \Amxn{} mají
+jednotkovou délku $\Vert a_i\Vert = 1$ $(i=1,2,...,n)$. Vzorce (2.1)
+popisující \name{GRAMOVU-SCHMIDTOVU} ortogonalizaci lze potom psát ve
+tvaru
+%
+\begin{align*}
+  \tag{9.1$_1$}
+  w_1 &= a_1 \\
+  \tag{9.1$_2$}
+  \widetilde w_i &= a_i - \sum_{j=1}^{i-2} \cos \varphi_{ij} \,w_j
+  \qquad i = 2,3,\ldots,n\\
+  \tag{9.1$_3$}
+  w_i &= \widetilde w_i / d_i
+\end{align*}
+
+\noindent
+kde $d_i = \Vert\widetilde w_i\Vert$ a $\varphi_{ij}$ představuje úhel
+vektorů $a_i$ a $w_j$.  Vektory $a_i$ nechť jsou zatíženy chybami
+$\delta_{ai}$
+%
+\begin{align*}
+  \tag{9.2}
+  a_i = a'_i + \delta_{ai} \Punc{.}
+\end{align*}
+
+\noindent
+Předpokládejme \orig{83} dále, že deformované sloupce $a'_i$ byly
+zpracovány v analogii k (9.1) \uv{orto\-go\-na\-li\-zač\-ní\-mi}
+formulemi%
+%
+\footnote{Nejde o ortogonalizaci v přesném slova smyslu, protože v
+(9.3) pracujeme s úhly $\varphi_{ij}$ a délkami $d_i$ určenými z
+vektorů $a_i$ a nikoliv $a'_i$. V důsledku toho nejsou dále definované
+chyby $\delta_{wi}$ (9.4) přesným ekvivalentem diferencí mezi výsledky
+exaktní ortogonalizace sloupců $a_i$ a exaktní ortogonalizace sloupců
+$a'_i$.}
+%
+\begin{align*}
+  \tag{9.3$_1$}
+  w'_1 &= a'_1 \\
+  \tag{9.3$_2$}
+  \widetilde w'_i &= a'_i - \sum_{j=1}^{i-2} \cos \varphi_{ij} \,w'_j
+  \qquad i = 2,3,\ldots,n\\
+  \tag{9.3$_3$}
+  w'_i &= \widetilde w'_i / d_i
+\end{align*}
+
+\noindent
+Chyby vektorů $w'_i$ budeme potom definovat jako rozdíly
+%
+\begin{align*}
+  \tag{9.4}
+  \delta_{wi} = w_i - w'_i.
+\end{align*}
+%
+Naším cílem bude najít horní mez norem chyb $\delta_{wi}$.
+
+
+Z rovnic (9.1) až (9.4) plyne
+%
+\begin{align*}
+  \tag{9.5}
+  \delta_{wi} &= d_i^{-1}\Big\{a_i - a'_i
+    - \sum_{j=1}^{i-1} \cos \varphi_{ij}\,(w_j - w'_j)
+    \Big\} =
+    \Big\{\delta_{ai}
+    - \sum_{j=1}^{i-1} \cos \varphi_{ij}\,.\,\delta_{wj} \Big\} \Punc{,}\\
+    %
+    \tag{9.6}
+    \Vert\delta_{wi}\Vert &\le d_i^{-1}\Big\{
+    \Vert\delta_a\Vert + \sum_{j=1}^{i-2}
+    |\cos \varphi_{ij}|\,.\,\Vert\delta_{wj}\Vert
+    \Big\}\Punc{,}
+\end{align*}
+
+\noindent
+kde jsme v (9.6) pro jednoduchost položili
+%
+\begin{align*}
+  \tag{9.7}
+  \Vert\delta_{ai} \Vert = \Vert\delta_a\Vert \quad
+  (=\Vert\delta_{a1} = \Vert\delta_{w1}\Vert), \quad
+  (i=1,2,\dots,n)\Punc{.}
+\end{align*}
+
+\noindent
+Předpokládáme tedy řádově stejnou chybu $\Vert\delta_a\Vert$ ve všech
+sloupcích výchozí matice $A$. Pro naše úvahy bude nejvýznamnější
+případ, kdy veličiny $\Vert\delta_a\Vert$ a $d_i$ budou v relaci
+%
+\begin{align*}
+  \tag{9.8}
+  \Vert\delta_a\Vert \ll d_i \ll 1\Punc{.}
+\end{align*}
+
+\noindent
+Potom lze totiž s rostoucím indexem i očekávat dosti prudký růst chyb
+$\delta_{wi}$ (pravá nerovnost), ovšem nikoliv takový, aby výsledky
+výpočtu byly chybami $\delta_{ai}$ zcela znehodnoceny (levá
+nerovnost).
+
+Za předpokladu (9.8) snadno ověříme, že platí \orig{84}
+%
+\begin{align*}
+  \tag{9.9}
+  \Vert \delta_{w2}\Vert &\le 2d_2^{-1} \Vert\delta_a\Vert\Punc{,} \\
+  \tag{9.10}
+  \Vert\delta_{w3}\Vert &\le d_3^{-1}
+  \Big\{ \Vert\delta_a\Vert + |\cos \varphi_{31}|.\Vert\delta_a\Vert
+  + 2|\cos \varphi_{32}|.\Vert\delta_a\Vert d_2^{-1} \Big\} \le \\
+  &\le 2d_3^{-1}\Big\{\Vert\delta_a\Vert + d_2^{-1}\Vert\delta_a\Vert\Big\}
+  \approx 2 (d_2d_3)^{-1}\Vert\delta_a\Vert\Punc{,}\\
+  \vdots \\
+  \tag{9.11}
+  \Vert \delta_{wi} \Vert &\le
+  2\big(\prod_{j=1}^i d_j\big)^{-1} \Vert \delta_a \Vert \Punc{,}
+\end{align*}
+
+\noindent
+přičemž nejméně příznivý případ nastává zřejmě tehdy, jsou-li všechny
+úhly $\varphi_{i,i-1}$ $(i=2,3,\ldots,n)$ blízké nule.  Speciální
+konstrukcí ověříme, že existují vektory $a_i$, jejichž ortogonalizace
+vede k ostrým úhlům v $\varphi_{i,i-1}$ a současně k malým délkám
+$d_i$. Tím chceme zdůraznit, že hodnota meze (9.11) není pesimisticky
+velká, tj. že je obecně třeba očekávat i její dosažení.
+
+
+Nechť je dána soustava ortonormálních vektorů $b_1,b_2,\ldots,b_n$.
+Vytvořme vektory $a_i$ $(i=1,2,\ldots,n)$ podle předpisu
+%
+\begin{align*}
+\tag{9.12}
+a_{i+1} = b_i + d b_{i+1}\Punc{,}\quad (d>0)
+\end{align*}
+
+\noindent
+a položme $a_1=b_1$. Ukazuje se, že ortogonalizací takto definovaných
+vektorů $a_i$ $(i=1,2,\ldots,n)$ podle (2.1) dostaneme vektory
+$\widetilde w_i$ resp. $w_i$, pro něž je
+%
+\begin{align*}
+\tag{9.13}
+w_1 = b_1, \quad \widetilde w_i = db_i, \quad w_i=b_i, \quad
+(i=2,3,\dots,n).
+\end{align*}
+%
+Z (9.13) potom dostáváme
+%
+\begin{align*}
+\tag{9.14}
+d_i &= \Vert \widetilde w_i \Vert = d,\\
+\tag{9.15}
+\cos \varphi_{i,i-1} &= \Vert a_i \Vert^{-1} (a_i,w_{i-1}) =
+   \Vert a_i \Vert^{-1}\big((b_{i-1} + db_i), b_{i-1}\big) =
+   \Vert a_i \Vert^{-1}, \quad (i=2,3,\ldots,n).\\
+\end{align*}
+
+\noindent
+Dále je
+%
+\begin{align*}
+\tag{9.16}
+\lim_{d \rightarrow 0} \cos \varphi_{i,i-1} =
+\lim_{d \rightarrow 0} \Vert a_i \Vert^{-1} =
+\lim_{d \rightarrow 0} \Vert b_{i-1} + db_i \Vert^{-1} =
+\Vert b_{i-1} \Vert^{-1} = 1,
+\end{align*}
+
+\noindent
+takže úhly $\varphi_{i,i-1}$ se s klesajícím parametrem $d$ blíží k
+nule.  Došli jsme tak k závěru, že při dostatečně malé hodnotě $d$ budou
+mít vektory konstruované podle (9.12) očekávané nepříznivé
+vlastnosti. Vyšetříme ještě vzájemnou polohu vektorů $a_i$ (9.12).
+
+
+Označme \orig{85} $\psi_{i,j}$ úhel vektorů $a_i$ a $a_j$
+(9.12). Potom platí
+%
+\begin{align*}
+\tag{9.17}
+\cos \psi_{i,j} = \big(\Vert a_i\Vert.\Vert a_{i+1}\Vert\big)^{-1}
+   (a_i,a_{i+1}) = \big(\Vert a_i\Vert.\Vert a_{i+1}\Vert\big)^{-1} d.
+\end{align*}
+
+\noindent
+Pro malé hodnoty $d$ je
+%
+\begin{align*}
+\tag{9.18}
+&\Vert a_i \Vert = \Vert b_{i-1} +db_i \Vert = (1+d^2)^{1\over2}
+      \approx 1 + {1\over2} {d^2},\\
+\tag{9.19}
+&\cos \psi_{i,i+1} \approx d{,}\\
+%\end{align*}
+%
+\shortintertext{takže}
+%
+%\begin{align*}
+\tag{9.20}
+&\psi_{i,i+1} \approx {1\over2} \pi - d, \qquad (i=2,3,\ldots,n-1).
+\end{align*}
+
+\noindent
+Dále platí pro $i=2,3,\ldots,n-2$ a $j=i+2,3,\ldots,n$
+%
+\begin{align*}
+\tag{9.21}
+\cos \psi_{i,j} &= \big(\Vert a_i \Vert.\Vert a_j\Vert\big)^{-1}(a_i,a_j)=
+     \big(\Vert a_i\Vert.\Vert a_j\Vert\big)^{-1}
+     \big((b_{i-2}+db_i),(b_{j-1}+db_j)\big) = 0,\\
+\tag{9.22}
+\psi_{i,j} &= {1\over2}\pi.
+\end{align*}
+
+\noindent
+Zbývá ještě najít úhly vektoru $a_1$, s ostatními vektory $a_j
+(j=3,4,\ldots,n$. Lze dokázat, že bude
+%
+\begin{align*}
+\tag{9.23}
+\psi_{1,2} \approx d, \qquad
+\psi_{1,j} = {1\over2}\pi, \qquad
+(j=3,4,\ldots,n).
+\end{align*}
+
+\noindent
+Pro větší přehlednost sestavíme tabulku úhlů, které svírají
+vektory $a_i$ při $d=0,02$ (tab. 9.1).
+
+\begin{table}
+%\caption{}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c c|c|c|}
+\hline
+~ & $a_1$ & $a_2$ & $a_3$ & $a_4$ &.&.& $a_{n-1}$ & $a_n$ \\
+\hline
+$a_1$&-&$1,1^\circ$ & $90^\circ$ & $90^\circ$ &.&.& $90^\circ$ & $90^\circ$ \\
+$a_2$&&-& $88,9^\circ$ & $90^\circ$ &.&.& $90^\circ$ & $90^\circ$ \\
+$a_3$&&&-& $88,9^\circ$ &.&.& $90^\circ$ & $90^\circ$ \\
+.&&&&&&&&.\\
+.&&&&&&&&.\\
+$a_{n-1}$&&&&&&&-&$88,9^\circ$\\
+\hline
+\end{tabular}\\
+~\\
+Tab. 9.1\\
+\end{center}
+\end{table}
+
+\noindent
+Z tabulky 9.l \orig{86} vyplývá zajímavé zjištění: přestože vektory
+$a_i$ tvoří s výjimkou dvojice $a_1$, $a_2$ přibližně ortogonální
+soustavu, můžeme při užití ortogonalizačního algoritmu očekávat rychlý
+růst chyb $\delta_{wi}$ v souladu s (9.11). Odpovídající numerický
+experiment popíšeme v kap. 10.
+
+
+Vedle úloh, u nichž mez (9.11) může dobře aproximovat velikost
+skutečně dosažených chyb, existují ovšem i úlohy, kde tomu tak být
+nemusí. Uvažujme např. vektory $a_i$, tvořící úzký trs -- tím míníme,
+že úhel kterékoliv dvojice vektorů je malý.  Odpovídající vektory
+$w_j$ tvoří ortonormální soustavu, takže je s uvážením (9.1$_1$)
+$w_j \perp a_1$ $(j > 1)$. Protože vektory $a_i$ $(i> 1)$ jsou blízké
+vektoru $a_1$, budou úhly $\varphi_{ij}$ $(i=3,4,\ldots,n)$,
+$\,(j=2,3,\ldots,i-1)$ blízké $\pi/2$ a tudíž norma skutečné chyby
+$\delta_{wi}$ počítaná z (9.6) pro $\cos \varphi_{ij} \rightarrow 0$
+bude patrně mnohem menší než mez (9.11).
+
+
+Vraťme se ješté na okamžik k soustavě vektorů $a_i$ (9.12). Z (9.6)
+plyne, že při ortogonalizaci vektoru $a_2$ k vektoru $a_1$ lze pro
+$d=0,02$ očekávat normu chyby až $\Vert \delta_{w2} \Vert =
+100 \Vert \delta_a \Vert$.  Kdybychom připustili možnost změny pořadí
+ortogzonalizace vektorů $a_i$ a ortogonalizovali místo vektoru $a_2$
+např. vektor $a_3$ pak by bylo $a \approx 1$ a $\cos \varphi_{21}$,
+takže pro očekávanou chybu $\delta_{w2}$ by podle (9.6) platilo
+$\Vert \delta_{w2}\Vert \le \Vert \delta_a \Vert$.  Horní mez chyby je
+tedy v druhém případě řádově nižší než v prvním.
+\Xemph{Permutace sloupců $a_i$ mají tak patrně vliv na zákonitosti
+šíření chyb v ortogonalizačním procesu}.  Jeví se proto jako účelné
+definovat speciální \Xemph{selektivní variantu ortogonalizačního
+algoritmu}, u níž pořadí ortogonalizace vektorů $a_i$ se bude obecně
+lišit od přirozeného pořadí.  Dosud uvažovanou variantu algoritmu,
+vycházející z přirozeného pořadí vektorů $a_i$, budeme označovat
+jako \Xemph{sekvenční}.
+
+
+Při užití selektivní varianty budeme předpokládat, že v i-tém kroku
+algoritmu, tj. \Xemph{při konstrukci vektoru W; bude k ortogonalizaci
+vybrán ten z dosud neortogonalizovaných vektorů $a_j$, který vede k
+maximální délce} $\Vert \widetilde w_i \Vert = d_i$.\footnote{Vhodná
+selekce sloupců je obecně nezbytna např. v algoritmu ORTON, jak jsme
+již naznačili v kap. 6.}
+%
+Zhruba řečeno, \orig{87} je výběr vektorů $a_j$ řízen v každém kroku
+algoritmu zásadou minimální hodnoty koeficientu $d_i^{-1}$ ve vzorci
+(9.5) pro určení chyby $\delta_{wi}$.\footnote{V praxi nemusí být
+selekce uplatňována důsledně. Stačí k ní přikročit pouze při výskytu
+délek $d_i$ menších než stsnovená tolerance (kap. 12).}
+
+
+Dokážeme, že u selektivní varianty algsoritmu platí rc normu
+chyby $\Vert \delta_{wi} \Vert$ nerovnost
+%
+\begin{align*}
+\tag{9.24}
+\Vert \delta_{wi} \Vert \le 2^{i-1} d_i^{-1} \Vert \delta_a \Vert.
+\end{align*}
+%
+Pro $i=2$ nerovnost platí, jak snadno ověříme srovnáním s (9.9).
+Předpokládejme, že nerovnost platí pro $j=1,2,\ldots,i-1$, tj. že je
+%
+\begin{align*}
+\tag{9.25}
+\Vert \delta_{wj} \Vert \le 2^{j-1} d_j^{-1} \Vert \delta_a \Vert,
+      \qquad (j=1,2,\ldots,i-1).
+\end{align*}
+
+\noindent
+Zbývá prokázat, že za tohoto předpokladu platí $i$ pro $j=i$.  Označme
+$\widetilde w^{(j)}$ vektor vzniklý ortogonalizací (2.1$_2$) některého
+dosud neortogonalizovaného vektoru $a$ k vektorům $w_1,w_2,\dots,w_j$
+%
+\begin{align*}
+\tag{9.26}
+\widetilde w^{(j)} = a - \sum_{k=1}^j (a,w_k)w_k, \quad (j=1,2,\ldots,i-1).
+\end{align*}
+
+\noindent
+Z definice selektivní varianty vyplývá nerovnost
+%
+\begin{align*}
+\tag{9.27}
+\Vert \widetilde w^{(j)} \Vert \le d_{j+1}, \quad \quad (j=1,2,\ldots,i-2).
+\end{align*}
+
+\noindent
+Rovnice (9.26) lze psát ve tvaru
+%
+\begin{align*}
+\tag{9.28}
+a = \widetilde w^{(j)} + \sum_{k=1}^j (a,w_k) w_k, \quad (j=1,2,\ldots,i-1),
+\end{align*}
+%
+takže s uvážením ortonormality vektorů $w$ bude pro $j=2,3,\ldots,i-1$
+%
+\begin{align*}
+\tag{9.29}
+\cos \varphi_{ij} &= (a,w_j) = (\widetilde w^{(j-1)},w_j),\\
+\tag{9.30}
+| \cos \varphi_{ij} | &\le \Vert \widetilde w^{j-1} \Vert \le d_j.
+\end{align*}
+%
+Dosazení do (9.6) potom s využitím (9.25) dává
+%
+\begin{align*}
+\tag{9.31}
+\Vert \delta_{wi} \Vert \le d_i^{-1}
+   \Big\{\; 2\Vert \delta_a \Vert +
+   \sum_{j=2}^{i-1} 2^{j-1} \Vert \delta_a \Vert \; \Big\}
+   = 2^{i-1} d_i^{-1} \Vert \delta_a \Vert.
+\end{align*}
+%
+Nerovnost (9.24) tedy platí.
+
+
+\Xemph{Při \orig{88} užití selektivní varianty algoritmu může tedy být, na
+rozdíl od varianty sekvenční, velikost chyby $\delta_{wi}$ posouzena
+podle odpovídající délky $d_i$ nezávisle na ostatních délkách $d_j$}
+-- viz (9.31) a (9.11). \Xemph{Protože je zpravidla
+%
+$2^{i-1}d_i^{-1} < 2 \big(\prod_{j=1}^i d_j\big)^{-1}$,
+%
+budeme u selektivní varianty pracovat s~menší horní mezí chyby
+než u sekvenční varianty}. V tom spočívá jedna z praktických
+výhod selektivní varianty. Její hlavní nevýhoda spočívá v poněkud
+pracnější realizaci.
+
+
+Protože je
+%
+$ \Vert a_i \Vert = \Vert w_i \Vert = 1$
+$(i=1,2,\ldots,n)$,
+%
+můžeme nerovnosti (9.11) a (9.31) psát podle (4.9) ve tvaru
+%
+\begin{align*}
+\tag{9.32}
+p_{wi} &\ge p_a + \sum_{j=1}^i \log_{10} d_j - log_{10} 2
+&\textrm{(sekvenční varianta),}
+\\
+\tag{9.33}
+p_{wi} &\ge p_a + \log_{10} d_i - (i-1)log_{10} 2
+&\textrm{(selektivní varianta),}
+\end{align*}
+%
+kde $p_a$ resp. $p_{wi}$ představují odhady počtu platných cifer složek
+vektorů $a'_i$ resp. $w'_i$.
+
+
+Při odvození vzorců (9.11) a (9.31) jsme předpokládali, že
+vektory $a_i$ mají jednotkovou délku, tj. že byly před vlastní
+ortogonalizací normalizovány dělením příslušnou euklidovskou
+normou. Procedura ORTON3 (kap. 12) užívá jednodušší \uv{vstupní}
+normalizace, spočívající v dělení všech složek vektoru $a_i$ složkou
+v absolutní hodnotě největší -- tzv. krychlovou normou
+%
+\begin{align*}
+\tag{9.34}
+\Vert a_i \Vert_\infty = \max_j | a_{ij}| \Punc{,}
+\end{align*}
+%
+kde $a_{ih}$ představuje j-tou složku vektoru $a_i$. Protože je
+[12, str. 118]
+%
+\begin{align*}
+\tag{9.35}
+\Vert a_i \Vert_\infty \le \Vert a_i \Vert = \sqrt m \Vert a_i \Vert_\infty
+\Punc{,}
+\end{align*}
+%
+bude délka vektoru děleného krychlovou normou
+%
+$a_i/{\Vert a_i \Vert_\infty}$
+%
+ležet v intervalu
+%
+\begin{align*}
+\tag{9.36}
+1 \le \Vert a_i \Vert / {\Vert a_i \Vert_\infty} \le \sqrt m
+\end{align*}
+%
+a může tedy být obecně větší než jedna. Případné respektování
+nerovnosti (9.36) ve vzorcích (9.11) a (9.31), resp. (9.32) a
+(9.33), by zřejmě nečinilo potíží. Vzhledem k aproximativnímu
+%
+charakteru \orig{89} zmíněných vzorců však od takové úpravy upustíme.
+%
+
+\underline{Poznámka}. V souvislosti se zavedením selektivní varianty
+ortogonalizačního algoritmu vyvstává otázka, jaký vliv mají
+%
+permutace sloupců matice $A$ na výsledky vyrovnání, např. na
+pořadí neznámých při zobecněné ortogonalizaci (3.17) $\rightarrow$ (3.18),
+na výpočet váhových koeficientů apod. Lze dokázat, že pokud
+při zobecněné ortogonalizaci permutujeme celé sloupce
+ortogonalizované matice, tj. spolu s prvky základní submatice i
+odpovídající prvky vedlejších submatic (2.16), zůstanou vzorce
+a postupy pro určení oprav, neznámých, funkcí i všech váhových
+koeficientů, odvozené v kap. 3 a 7, v platnosti. Platnost
+tohoto tvrzení pro vyrovnání podmínkových pozorování a podmínkových
+pozorování s neznámými je evidentní -- permutace sloupců
+ortogonalizované matice odpovídají totiž permutacím podmínkových
+rovnic. Důkaz tvrzení v případě zbývajících dvou kategorií
+vyrovnávacích úloh je zdlouhavější a nebudeme jej proto uvádět.

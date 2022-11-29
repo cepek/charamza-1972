@@ -1,0 +1,448 @@
+
+V předcházející kapitole \orig{29} jsme ukázali, že rovnice oprav i
+podmínkové rovnice jsou v zásadě řešitelné zobecněným
+ortogonalizačním algoritmen, který lze pro jeho zřejmou jednoduchost,
+homogenitu a cyklický charakter snadno programovat. Zbývá ještě
+posoudit jeho numerickou stabilitu.
+
+Uvažujme nejprve soustavu lineárních algebraických rovnic s
+regulární maticí $A$ $(n \times n)$
+%
+\begin{align*}
+  \tag{4.1A}\
+  Ax + b = 0
+\end{align*}
+%
+Neznámé $x$ můžeme nalézt bezorostředním řešením této soustavy
+(postup A) nebo řešením některé soustavy ekvivalentní (postup
+B). Z důvodů, které vysvitnou později, budeme při postupu B
+řešit soustavu, vzniklou ze soustavy (4.1A) násobením maticí $A^T$
+zleva
+\begin{align*}
+\tag{4.1B} A^TAx + A^Tb = 0.
+\end{align*}
+%
+Soustavy (4.1A) a (4.1B) jsou ekvivalentní, neboť mají jediné
+společné řešení $x$.
+
+
+
+Připusťme nyní, že absolutní členy obou soustav jsou zatíženy stejnou
+chybou $\delta = \delta b = \delta (A^Tb)$.  Pro zjednodušení našich
+úvah omezíme studium stability obou postupů pouze na zkoumání jejich
+citlivosti na tuto chybu, tj. budeme se ptát na velikost odpovídající
+chyby $\delta x$ neznámých $x$. Ukáže-li se, že u jednoho postupu může
+stejné chybě $\delta$ odpovídat v některém smyslu větší chyba $\delta
+x$ než u druhého postupu, pak první z nich pokládáme za méně stabilní
+a tedy i méně vhodný pro výpočet.
+
+
+
+
+Je známo [15, str.~33], že pro soustavu (4.1A) platí
+%
+\begin{align*}
+  \tag{4.2A} \|\delta x\| / \|x\| &\le \mathrm{cond}(A) \|\delta\|/\|b\|,\\
+  \tag{4.3} \mathrm{cond}(A) &= \mu_1 / \mu_n,
+\end{align*}
+%
+kde $\mathrm{cond}(A)$ je číslo podmíněnosti ratice $A$, definované podílem
+%
+%
+maximálního \orig{30} ($\mu_1$) a minimálního ($\mu_n$) singulárního
+čísla\footnote{Singulární čísla matice A jsou rovna kladně uvažovaným
+odmocninám z charakteristických čísel matice $A^TA$ [15,~str.~15].}
+matice A [15, str. 32). Pro soustavu (4.1B) je analogicky
+%
+\begin{align*}
+  \tag{4.2B} \|\delta x\| \ \|x\|
+  & \le \mathrm{cond}(A^TA) \|\delta\|/\|A^Tb\|.
+\end{align*}
+%
+Podíly norem v nerovnostech (4.2A) a (4.2B) lze považovat za
+míru relativních chyb odpovídajících vektorů. Obě nerovnosti
+tak shora omezují relativní chybu vektoru neznámých v závislosti
+na relativní chybě vektoru absolutních členů a na čísle
+podmíněnosti matice soustavy. Z nerovností (4.2A) a (4.2B) dále
+vyplývá, že hledaná citlivost postupů A a B může být měřena
+čísly podmíněnosti matic $A$ a $A^TA$. Ukazuje se, že těmito čísly
+lze podobně kvantifikovat i závislost chyby neznámých na chybách
+prvků matice soustavy a v podstatě i na zaokrounlovacích chybách,
+k nimž dochází při vlastním numerickém řešení soustavy [15, str. 36].
+Posoudíme nyní vzájemnou velikost obou čísel podmíněnosti.
+
+Lze dokázat, že platí
+%
+\begin{align*}
+  \tag{4.4}   \mathrm{cond} (A^TA) = \left\{\mathrm{cond}(A)\right\}^2 .
+\end{align*}
+%
+Uvážíme-li, že čísla podmíněnosti nemohou být menší než jedna,
+pak je zřejmé, že horní mez chyby (4.2B) nemůže být menší než
+mez chyby (4.2A). Čísla podmíněnosti, vyskytující se v praxi,
+jsou zpravidla řádově větší než jedna. V takových případech je
+postup A výrazně stabilnější než postup B. Přestože jde o úlohy
+algebraicky ekvivalentní, je při řešení soustavy (4.1B)
+realistické očekávat numerické obtíže, které budou tím větší, čím
+větší bude číslo podmíněnosti výchozí matice A, nebo jinými slovy,
+čím horší bude její podmíněnost.
+
+
+Pro větší názornost připojíme numerický příklad. Nechť je
+např. soustava (4.1A):
+%
+\begin{align*}
+    x_1 &+ 0,9 x_2 - 1,9 = 0\\
+0,8 x_1 &+ 0,7 x_2 - 1,5 = 0 ,
+\end{align*}
+%
+soustava \orig{31} (4.1B):
+\begin{align*}
+  1,64 x_1 &+ 1,46 x_2 - 3,10 = 0\\
+  1,46 x_1 &+ 1,30 x_2 - 2,76 = 0 ,
+\end{align*}
+%
+se společným řešením $x_1 = x_2 = 1$. Podrobnější výpočet dává
+%
+\begin{align*}
+  \tag{4.5}   \mathrm{cond}(A) = 1,5\cdot10^2, \qquad
+              \mathrm{cond}(A^TA) = 2,2\cdot10^4,
+\end{align*}
+%
+takže podle (4.2A) a (4.2B) je obecně
+%
+\begin{align*}
+\tag{4.6A}   \|\delta x\| / \|x\| &\le 1,5\cdot10^2 \|\delta\|/\|b\| \\
+\tag{4.6B}   \|\delta x\| / \|x\| &\le 2,2\cdot10^4 \|\delta\|/\|A^Tb\| .\\
+\end{align*}
+%
+Najdeme numerickou hodnotu relativní chyby řešení, odpovídající
+některému konkrétnímu vektoru $\delta$, např.
+%
+\begin{align*}
+\tag{4.7} \delta =(-0,0001 ~~ 0,0001)^T .
+\end{align*}
+%
+Uvedeme opět pouze výsledky výpočtu.\\
+
+
+\noindent
+Soustava (4.1A) :
+\begin{align*}
+\tag{4.8A}   \delta_x &= (-0,008 ~~ 0,009)^T, &
+             \|\delta x\| / \|x\| = 1,5\cdot10^2 \|\delta\|/\|b\|,\hspace{2.5ex}
+\end{align*}
+soustava (4.1B) :
+\begin{align*}
+\tag{4.8B}   \delta_x &= (0,690 ~~ -0,775)^T, &
+             \|\delta x\| / \|x\| = 2,2\cdot10^4 \|\delta\|/\|A^Tb\| .
+\end{align*}
+
+
+Srovnání skutečně dosažených relativních chyb neznámých se (4.5a)
+a (4.6B) ukazuje, že u obou soustav prakticky nastal nejméně
+příznivý případ, tj. bylo dosaženo horní meze relativní chyby
+neznámých pro danou relativní chybu absolutních členů. Tento jev je
+důsledkem záměrné volby vektoru $\delta$, která měla zdůraznit, že ve
+vzorcích (4.2A) a (4.2B) může nastat rovnost.
+
+Nerovnostem (4.2A) a (4.2B) je možno dát ještě druhý tvar.
+Nechť
+\begin{align*}
+\tag{4.9} p_a = -log_{10} (\|\delta_a\| / \|a\|),
+\end{align*}
+%
+kde a je libovolný \orig{32} nenulový vektor a $\delta_a$ je nenulový
+vektor chyby. Za určitých zjednodušujících předpokladů může
+$p_a$ sloužit jako odhad počtu platných cifer složek vektoru
+$(a  + \delta_a)$
+Logaritmujeme-li např. nerovnost (4.2A), dostaneme
+%
+\begin{align*}
+\tag{4.10} p_x \ge p_b - \log_{10} \mathrm{cond}(A.)
+\end{align*}
+%
+Při řešení soustavy rovnic, jejíž matice má číslo podmíněnosti
+%
+$\mathrm{cond}(A)$
+%
+můžeme tedy očekávat, že počet platných cifer
+vypočtených neznámých bude až o
+%
+$\log_{10}\mathrm{cond}(A)$
+%
+cifer menší než počet s platných cifer absolutních členů. Podle (4.4)
+můžeme potom analogicky soudit, že u soustavy s maticí $A^TA$ by mohlo
+dojít ke ztrátě až dvojnásobného počtu cifer. V aplikaci na náš
+numerický příklad dostaneme
+%
+\begin{align*}
+\tag{4.11}   \log_{10}\mathrm{cond}(A) = 2,2  \qquad
+             \log_{10}\mathrm{cond}(A^TA) = 4.3.
+\end{align*}
+%
+Srovnáme-li velikost složek vektoru chyb $\delta_x$ (4.8A)
+resp. (4.8B) s teoreticky přesným řešením $x_1 = x_2 = 1$ vidíme, že
+počet platných cifer neznámých je skutečně přibližně o 2 resp. 4 cifry
+menší než chybou $\delta$ (4.7) determinovaný počet platných cifer
+absolutních členů.
+
+
+Příklad, který jsme právě podrobně probrali ukazuje mj., že numerické
+řešení soustavy (4.1B) s maticí $A^TA$ může být podstatně obtížnější
+než řešení soustavy (4.1A) s maticí $A$.  V daném kontextu, kdy jsme
+uvažovali pouze regulární a tedy čtvercové matice $A$, může být takové
+zjištění sice zajímavé, nemá však valného praktického
+významu. Nebudeme mít totiž zpravidla důvod k pracnému přechodu ze
+soustavy (4.1A) na soustavu (4.1B)%
+\footnote{
+V některých případech může ovšem být taková transformace
+užitečná. Je-li matice $A$ regulární, pak matice $A^TA$ je symetrická
+a pozitivně definitní. Tato vlastnost může být někdy cenná.
+}
+
+
+Zcela jiná situace však nastává, je-li matice $A$ obdélníková a
+odpovídající soustava je řešena metodou nejmenších čtverců.  Jak jsme
+viděli v kap. 3, užívá klasický vyrovnávací postup převodu matice
+rovnic oprav $A$ resp. matice podmínkových rovnic $A^T$ první
+resp. druhou \name{GAUSSOVOU} transformací [12, str. 35] na čtvercovou
+symetrickou matici $N= A^TA$, analogického tvaru jako
+%
+matice soustavy (4.1B). \orig{33} Matice N je maticí soustavy
+normálních rovnic, která se potom vhodnou metodou řeší namísto výchozí
+soustavy s maticí $A$ resp. $A^T$.
+
+
+Číslo podmíněnosti není definováno pro obdélníkové mstice,
+nemůžeme tedy porovnat podmíněnost metice $N$ s podmíněností
+matice $A$. Přesto však blízká analogie k našemu příkladu nás nutí
+očekávat nepříliš dobrou podmíněnost matice $N$ a zároveň nás
+vede ke hledání a studiu metod řešících vyrovnávací úlohu přímým
+zpracováním matice $A$, tedy bez přechodu k normálním rovnicím.
+
+
+
+Na známém příkladě \name{LAUCHLIHO} [26] nejprve ukážeme, že
+existují vyrovnávací úlohy, které vedou k libovolně špatně
+podmíněným maticím normálních rovnic. \name{LAUCHLI} uvažuje matici rovnic
+oprav
+%
+\begin{align*}
+\tag{4.12}   A =
+\begin{bmatrix}
+1 & 1 & 1 & 1 & 1 \\
+\epsilon & 0 & 0 & 0 & 0 \\
+0 & \epsilon & 0 & 0 & 0 \\
+0 & 0 & \epsilon & 0 & 0 \\
+0 & 0 & 0 & \epsilon & 0 \\
+0 & 0 & 0 & 0 & \epsilon \\
+\end{bmatrix},
+\end{align*}
+%
+kde $\epsilon$ je proměnný parametr. Odpovídající matice normálních
+rovnic je
+\begin{align*}
+\tag{4.13} N = A^TA =
+\begin{bmatrix}
+1+\epsilon^2 & 1 & 1 & 1 & 1 \\
+1 & 1+\epsilon^2 & 1 & 1 & 1 \\
+1 & 1 & 1+\epsilon^2 & 1 & 1 \\
+1 & 1 & 1 & 1+\epsilon^2 & 1 \\
+1 & 1 & 1 & 1 & 1+\epsilon^2 \\
+\end{bmatrix}
+\end{align*}
+%
+s číslem podmíněnosti
+%
+\begin{align*}
+\tag{4.14} \mathrm{cond}(N) = (5 + \epsilon^2)\epsilon^{-2},
+\end{align*}
+%
+
+
+
+\noindent
+které \orig{34} zřejmě pro $\epsilon \rightarrow 0$ roste nade všechny
+meze. Pracujeme-li např. s devítimístnými mantisami v pohyblivé řádové
+čárce, potom již hodnota $\epsilon = 10^{-5}$ vede k matici, jejíž
+všechny prvky jsou rovny jedné, a která je tedy
+singulární. Odpovídající soustava normálních rovnic není potom
+jednoznačně řešitelná.
+
+
+Zbývá ještě porovnat numerickou stabilitu ortogonalizačního algoritmu
+se stabilitou klasického vyrovnávacího postupu.  Užijeme opět
+ilustrativního příkladu, tentokrát z oblasti aproximace funkčních
+vztahů.
+
+
+Budeme hledat koeficienty $c_i^{(n)}$ polynomů
+\begin{align*}
+\tag{4.15}
+P_n(x)&= \sum_{i=0}^n c_i^{(n)}x^i, \qquad(n=1,2,\ldots,7)
+\end{align*}
+%
+aproximujících ve smyslu metody nejmenších čtverců funkci $f(x)$,
+definovanou v $m=11$ diskrétních bodech $x_j$ $(j=1,2,\ldots,11)$
+tabulkou
+%
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+$x_j$    & 0   & 0,1 & 0,2 & 0,3 & 0,4 & 0,5 & 0,6 & 0,7 & 0,8 & 0,9 & 1,0\\
+\hline
+$f(x_j)$ & 0.5 & 0,6 & 0,7 & 0,8 & 0,9 & 1,0 & 1,1 & 1,2 & 1,3 & 1,4 & 1,5\\
+\hline
+\end{tabular}\\[1.5ex]
+Tab. 4.1
+%\caption{}
+%\label{}
+\end{table}
+%
+
+\noindent
+Z tabulky je patrno, že platí
+%
+\begin{align*}
+\tag{4.16}   f(x_J) = 0,5 + x_j, \qquad (j=1,2,\ldots,11),
+\end{align*}
+%
+takže hledané koeficienty $c_i^{(n)}$ $(n=1,2,...,7)$ jsou teoreticky
+rovny
+%
+\begin{align*}
+\tag{4.17}  c_0^{(n)} = 0,5, \qquad
+            c_1^{(n)} = 1,   \qquad
+            c_i^{(n)} = 0,   \qquad (1<i\le n).
+\end{align*}
+%
+
+
+
+
+
+Naši úlohu budeme nyní řešit numericky, přičemž jednou
+užijeme přechodu na řešení normálních rovnic a po druhé budeme
+ortogonalizovat rovnice oprav\footnote{%
+Pro úplnost je třeba poznamenat, že pro řešení uvedené úlohy
+byla vyvinuta speciální numericky stabilní metoda, založená
+na rekurentním generování polynomů ortogonálních na množině
+bodů $x_j$ [14].
+}.
+%
+Zaměříme se na porovnání
+přesnosti, kterou obě metody dávají při výpočtu koeficientů
+%
+$c_i^{(n)}$.
+%
+Dosaženou přesnost budeme u každého polynomu měřit počtem
+platných cifer výsledků, určeným v souladu se (4.9) podle vzorce
+%
+kde \orig{35} $\|\delta_c\|$ je délka vektoru chyby neznámých a $\|c\|
+= 1,12$ je délka vektoru neznámých. Poznamenejme ještě, že vektory
+$\delta_c$ jsou v popisované úloze produktem zaokrouhlovacích chyb a
+chyb ze zobrazení vstupních dat v počítači.
+
+
+
+Hodnoty
+%
+$\mathrm{P}_{\mathrm{NORM}}$ a
+$\mathrm{P}_{\mathrm{ORT}}$
+%
+odpovídající oběma zkoušeným metodám jsou uvedeny v tab. 4.2. Základem
+pro jejich výpočet byly numerické výsledky řešení úlohy na počítači
+ELLIOTT 503 (mantisa 29 bitů) podle programu MNČ-E503-VM [20, str.19]
+a pomocí procedury ORTC53 (kap. 12).
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\begin{tabular}{c}
+ Stupeň\\polynomu\\
+\end{tabular} &
+$\mathrm{P}_{\mathrm{NORM}}$ &
+$\mathrm{P}_{\mathrm{ORT}}$ &
+$log_{10}\mathrm{cond}(H)$ &
+$log_{10}M^*$\\
+\hline
+   1  &  7,5  &  8,7  &  1,3  &  0,8 \\  %  1  7,5  8,7  1,3  0,8  scan OCR
+   2  &  8,7  &  7,8  &  2,7  &  2,2 \\  %  2  8,7  7,8  2,7  2,2  opraveno!
+   3  &  5,2  &  8,0  &  4,2  &  3,6 \\  %  3  5,2  8,0  4,2  3,6
+   4  &  3,6  &  6,7  &  5,7  &  5,0 \\  %  4  3,6  6,7  5,7  5,0
+   5  &  2,1  &  5,9  &  7,2  &  6,4 \\  %  5  2,1  5,9  7,2  6,4
+   6  &  0,7  &  5,2  &  8,7  &  8,0 \\  %  6  0,7  5,2  8,7  8,0
+   7  & -0,7  &  4,6  & 10,2  &  9,4 \\  %  7 -0,7  4,6 10,2  9,4
+\hline
+\end{tabular}\\[1.5ex]
+Tab. 4.2
+%\caption{}
+%\label{}
+\end{table}
+%
+
+
+
+Ve čtvrtém sloupci tabulky jsou uvedeny logaritmy čísel podmíněnosti
+tzv. \name{HILBERTOVÝCH} matic $H$ [15, str.99]. Lze dokázat [14], že
+matice normálních rovnice $N$, na něž vede první způsob řešení naší
+úlohy, jsou blízké \name{HILBERTOVÝM} maticím odpovídajícího
+řádu. Budeme proto čísla podmíněnosti matic N aproximovat čísly
+podmíněnosti matic $H$. V posledním sloupci tab. 4.2 jsou pro
+zajímavost uvedeny logaritmy jiným způsobem definovaných čísel
+podmíněnosti $M^*$ matic $N$, která byla zavedena v programovacím
+systému MNČ-I [19] a jsou tištěna programem MNČ-E503-VM.
+
+~
+
+\noindent\orig{36} \emph{Analýza údajů v tab. 4.2 nás vede k těmto závěrům:}
+
+\begin{itemize}
+\item[1.]
+Rozdíly v přesnosti obou uvažovaných metod, aplikovaných k
+řešení dobře podmíněných vyrovnávacích úloh%
+\footnote{
+   Dobře (špatně) podmíněnou vyrovnávací úlohou budeme rozumět
+   takovou úlohu,která vede k dobře (špatně) podmíněné matici
+   soustavy normálních rovnic.},
+%
+nejsou podstatné (polynomy prvního a druhého stupně).
+
+\item[2.]
+Při řešení úloh špatně podmíněných dává ortogonalizační
+metoda řádově vyšší přesnost než metody založené na řešení
+soustav normálních rovnic. Existují případy, kdy ortogonalizační
+metoda dá použitelné výsledky, zatímco řešení normálních
+rovnic selže (polynom sedmého stupně)%
+\footnote{
+\name{FORSYTHE} [14] komentuje poslední situaci takto:
+   \emph{"When $n \ge 7$ or 8, however, one begins to hear strange grumblings
+   of discontent in the computing laboratory. The gist of the
+   unhappiness is that each method selected to solve the system
+   of normal eguations fails somehow for the larger values of n."}
+}.
+
+\item[3.]
+Při užití obvyklého postupu, vycházejícího z řešení soustavy
+normálních rovnic, může dojít ke ztrátě platných cifer rovné až
+logaritmu čísla podmíněnosti matice soustavy normálních rovnic.
+Ztráta platných cifer při užití metody ortogonalizační není
+větší než polovina této hodnoty.
+
+\end{itemize}
+
+
+Právě formulované závěry jsou v souladu s poznatky, k nimž jsme
+dospěli při rozboru řešení soustav (4.1A) a (4.1B) se čtvercovou
+maticí a svědčí o přednostech, které má z hlediska přesnosti
+ortogonalizační algoritmus před metodou klasickou. Naše zjištění,
+která jsme pro názornost vyvodili empiricky z rozboru numerického
+příkladu lze, jak ukazuje \name{SCHWARZ} [34, str. 102] odvodit
+obecnou úvahou, platnou jak pro vyrovnání zprostředkujících, tak pro
+vyrovnání podmínkových pozorování. Pro případ podmínko- vých
+pozorování uvádí obecný rozbor \name{DROZDOV} [10], přičemž užívá
+norem obdélníkové matice soustavy podmínkových rovnic a matice k ní
+pseudoinverzní.

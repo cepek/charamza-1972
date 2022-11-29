@@ -1,0 +1,287 @@
+Program \orig{125} ORTON3-ZKOUŠKA1 (příl. B) ilustruje možnost užití
+procedury ORTON3 především k řešení čtyř základních úloh
+vyrovnávacího počtu, definovaných v úvodní kapitole. Program byl
+sestaven zejména pro ověření funkce procedury ORTON3 a nemá
+tedy všechny vlastnosti obecného programu pro řešení
+vyrovnávacích úloh. ORTON3-ZKOUŠKA1 plní následující funkce:
+
+\begin{enumerate}
+\item
+Z pásky dat čte koeficienty a absolutní členy rovnic oprav
+resp. podmínkových rovnic a koeficienty vyrovnávaných funkcí.  Přitom
+se předpokládá, že váhy pozorovaných hodnot jsou jednotkové. Vektorů
+absolutních členů v rovnicích oprav resp. v podmínkových rovnicích
+může být větší počet.
+
+\item
+Ze vstupních dat vytvoří odpovídající matici $A$ (12.1) a transformuje
+ji pomocí procedury ORTON3 na matici $W$, kterou tiskne. Způsobem,
+který jsme popsali v kap. 12, tiskne rovněž všechny diagnostické
+informace, které popisují průběh zpracování úlohy procedurou ORTON3.
+
+\item
+Pod označením \uv{\TT{COLUMN SEOUENCE}} tiskne program indexy
+sloupců matice $A$ v~pořadí, v jakém byly ortogonalizovány (viz kap.
+12, parametr \TT{INDEX}).
+
+\item
+Při \orig{126} vyrovnání podmínkových pozorování nebo při řešení obecné úlohy
+vyrovnávacího počtu tiskne opravy (\uv{\TT{RESIDUAL ERRORS}}) a
+příp. neměřené neznámé (\uv{\TT{UNKNOWNS}}). Při řešení zbývajících
+dvou základních úloh jsou nodnoty oprav a neměřených neznámých
+obsaženy v matici $W$.
+\end{enumerate}
+
+Dříve, než popíšeme pravidla pro přípravu vstupních dat,
+zopakujeme souhrnně symboliku, které jsme užili v předchozích
+kapitolách v souvislosti se základními vyrovnávacími úlohami.
+
+\begin{longtable}[l]{llll}
+  \multicolumn{4}{l}{Vyrovnání zprostředkujících pozorování:}\\
+  &rovnice oprav & : ~ $v = Ax + l$ \\
+  &funkce vyrovnaných veličin & : ~ $g = A_gv + B_gx + d $ & (obecný tvar)\\
+  &funkce vyrovnaných veličin & : ~ $g = B_gx + d $ & (speciální tvar).\\
+  %
+  \multicolumn{4}{l}{Vyrovnání zprostředkujících pozorování
+    s podmínkami (IC):}\\
+  &rovnice oprav & : ~ $v = Ax + l_1$ \\
+  &podmínkové rovnice & : ~ $0 = Bx + l_2$ \\
+  &funkce vyrovnaných veličin & : ~ $g = A_gv + B_gx + d $ & (obecný tvar)\\
+  &funkce vyrovnaných veličin & : ~ $g = B_gx + d $ & (speciální tvar).\\
+  %
+  \multicolumn{4}{l}{Vyrovnání podmínkových pozorování:}\\
+  &podmínkové rovnice & : ~ $A^Tv + u^T = 0$\\
+  &funkce vyrovnaných veličin & : ~ $g^T = A_g^Tv  +d^T $. \\
+  %
+  \multicolumn{4}{l}{Vyrovnání podmínkových pozorování
+    s neznámými (CU):}\\
+  &podmínkové rovnice & : ~ $A^Tv + B^Tx + u^T = 0$\\
+  &funkce vyrovnaných veličin & : ~ $g^T = A_g^Tv + B^T_gx + d^T $ . \\
+\end{longtable}
+
+Vstupní data pro výpočet se skládají ze dvou skupin hodnot.
+První skupinu hodnot tvoří dvanáct parametrů, které popisují
+typ, rozměry a strukturu úlohy, spolu s některými požadavky na
+způsob jejího zpracování. Význam jednotlivých parametrů
+definuje tab. 13.1.  \orig{127}
+
+
+\newcolumntype{P}{>{\centering\arraybackslash} m{0.048\linewidth} }
+\newcolumntype{C}{>{\centering\arraybackslash} m{0.206\linewidth} }
+\newcolumntype{D}{>{\centering\arraybackslash} m{0.430\linewidth} }
+\begin{table}[!htb]
+{\centering\setlength{\extrarowheight}{2pt}
+{\small\hspace*{-1ex}\begin{tabular}{|P|C|C|C|C|}
+\hline
+ Para\-metr &
+ Zprostředkující pozorování &
+ Zprostředkující pozorování \mbox{s podmínkami (IC)} &
+ Podmínková pozorování \mbox{s neznámými (CU)} &
+ Podmínková pozorování \\ \hline
+ 1 & \multicolumn{4}{c|}{počet oprav}
+ \\ \hline
+ 2 & 0 &
+ počet podmínkových rovnic pro neznámé &
+ počet neznámých &
+ 0
+ \\ \hline
+ 3 &
+ \multicolumn{2}{c|}{úhrnný počet funkcí vyrovnaných veličin} &
+ \multicolumn{2}{c|}{počet vektorů absolutních členů}
+ \\ \hline
+ 4 &
+ \multicolumn{2}{c|}{počet neznámých} &
+ \multicolumn{2}{c|}{počet podmínkových rovnic}
+ \\ \hline
+ 5 &
+ \multicolumn{2}{D|}{počet vektorů absolutních členů
+                     + počet funkcí obecného tvaru} &
+ \multicolumn{2}{D|}{počet funkcí vyrovnaných veličin}
+ \\ \hline
+ 6 & 0 &
+ \multicolumn{2}{D|}{hodnota parametru nesmí být menší než
+ rozdíl mezi počtem řádků matice B a její hodností
+ (viz kap. 12 -- parametr \uv{defect})
+ } &
+ 0
+ \\ \hline
+ 7 & \multicolumn{2}{D|}{0} &  \multicolumn{2}{D|}{1}
+ \\ \hline
+ \textcolor{white}{${}^\star$}8${}^\star$
+ & \multicolumn{2}{D|}{1} &  \multicolumn{2}{D|}{0}
+ \\ \hline
+ 9 & \multicolumn{4}{l|}{
+ \begin{minipage}{0.34\linewidth}\vspace*{3pt}
+ 0 \dots{} sekvenční varianta algoritmu\\
+ 1 \dots{} selektivní varianta algoritmu\vspace*{3pt}
+ \end{minipage}\mbox{ \Big\} ~ viz kap. 12 -- parametr \uv{change}}
+ }
+ \\ \hline
+ 10 & \multicolumn{4}{l|}{tolerance tol (viz kap 12 -- parametr \uv{tol})}
+ \\ \hline
+ 11 & \multicolumn{4}{l|}{tolerance tolmin (viz kap 12
+ -- paramatr \uv{tolmin})}
+ \\ \hline
+ 12 & 1 &
+ \multicolumn{2}{D|}{ \mbox{poměr velikosti prvků matic $A$ a $B$}
+ \mbox{(viz kap. 12 -- parametr \uv{magn})}
+ } &
+ 1
+ \\ \hline
+\end{tabular}}\\[0.9em]
+}
+${}^\star$ {\small Je-li hodnota osmého parametru rovna jedné,
+pak bude ortogonalizovaná matice doplněna na spodním okraji maticí
+$[\; E \;\; 0 \;]$,
+což podle (3.17) a (7.8) umožní mj.~přímý výpočet neznámých
+při vyrovnání zprostředkujících pozorování, příp.
+zprostředkujících pozorování s podmínkami. Je-li hodnota parametru
+rovna nule, pak k takovému doplnění nedojde.
+}
+\begin{center}%\vspace{-0.1em}
+         Tab. 13.1
+\end{center}
+\end{table}
+
+
+%
+\newpage
+%
+Druhou skupinu \orig{128} dat tvoří matice se strukturou, kterou v
+závislosti na typu vyrovnávací úlohy popisují následující
+schemata :
+
+\newcommand{\SchemaText}[1]{{{\makebox[11em][l]{#1}}}}
+\newcommand{\Kategorie}[1]{\vspace*{.6ex}\noindent{#1}}%\vspace{-000000001.5e}
+
+\Kategorie{zprostředkující pozorování:}
+%
+\begin{align*}
+  \tag{13.1}
+ \vcenter{\hbox{
+  \begin{tikzpicture}
+    \draw (0,2) rectangle (1,3); \draw(0.5,2.5) node{$A$};
+    \draw (1,2) rectangle (2,3); \draw(1.5,2.5) node{$\ell$};
+    \draw (2,2) rectangle (3,3); \draw(2.5,2.5) node{$A^T_g$};
+    \draw (0,1) rectangle (1,2); \draw(0.5,1.5) node{$B_g$};
+    \draw (1,1) rectangle (2,2); \draw(1.5,1.5) node{$d$};
+    \draw (2,1) rectangle (3,2); \draw(2.5,1.5) node{$0$};
+    \draw (0,0) rectangle (1,1); \draw(0.5,0.5) node{$B_g$};
+    \draw (1,0) rectangle (2,1); \draw(1.5,0.5) node{$d$};
+    \draw (2,0) rectangle (3,1); \draw(2.5,0.5) node{$0$};
+    %
+    \draw(3.5,1.5) node[anchor=west]{\SchemaText{(obecný tvar funkcí)}};
+    \draw(3.5,0.5) node[anchor=west]{\SchemaText{(speciální tvar funkcí)}};
+  \end{tikzpicture} }}
+\end{align*}
+
+\Kategorie{zprostředkující pozorování s podmínkami:}
+%
+\begin{align*}
+  \tag{13.2}
+ \vcenter{\hbox{
+  \begin{tikzpicture}
+    \draw (0,3) rectangle (1,4); \draw(0.5,3.5) node{$A$};
+    \draw (1,3) rectangle (2,4); \draw(1.5,3.5) node{$\ell_1$};
+    \draw (2,3) rectangle (3,4); \draw(2.5,3.5) node{$A^T_g$};
+    \draw (0,2) rectangle (1,3); \draw(0.5,2.5) node{$B$};
+    \draw (1,2) rectangle (2,3); \draw(1.5,2.5) node{$\ell_2$};
+    \draw (2,2) rectangle (3,3); \draw(2.5,2.5) node{$0$};
+    \draw (0,1) rectangle (1,2); \draw(0.5,1.5) node{$B_g$};
+    \draw (1,1) rectangle (2,2); \draw(1.5,1.5) node{$d$};
+    \draw (2,1) rectangle (3,2); \draw(2.5,1.5) node{$0$};
+    \draw (0,0) rectangle (1,1); \draw(0.5,0.5) node{$B_g$};
+    \draw (1,0) rectangle (2,1); \draw(1.5,0.5) node{$d$};
+    \draw (2,0) rectangle (3,1); \draw(2.5,0.5) node{$0$};
+    %
+    \draw(3.5,1.5) node[anchor=west]{\SchemaText{(obecný tvar funkcí)}};
+    \draw(3.5,0.5) node[anchor=west]{\SchemaText{(speciální tvar funkcí)}};
+  \end{tikzpicture} }}
+\end{align*}
+
+\Kategorie{podmínková pozorování:}
+%
+\begin{align*}
+  \tag{13.3}
+  \vcenter{\hbox{
+  \hspace{-9.8em}\begin{tikzpicture}
+    \draw (0,1) rectangle (1,2); \draw(0.5,1.5) node{$A^T$};
+    \draw (1,1) rectangle (2,2); \draw(1.5,1.5) node{$u^T$};
+    \draw (0,0) rectangle (1,1); \draw(0.5,0.5) node{$A^T_g$};
+    \draw (1,0) rectangle (2,1); \draw(1.5,0.5) node{$d^T$};
+  \end{tikzpicture} }}
+\end{align*}
+
+\Kategorie{podmínková pozorování s podmínkami:}
+%
+\begin{align*}
+  \tag{13.4}
+  \vcenter{\hbox{
+  \hspace{-11.em}\begin{tikzpicture}
+    \draw (0,1) rectangle (1,2); \draw(0.5,1.5) node{$A^T$};
+    \draw (1,1) rectangle (2,2); \draw(1.5,1.5) node{$B^T$};
+    \draw (2,1) rectangle (3,2); \draw(2.5,1.5) node{$u^T$};
+    \draw (0,0) rectangle (1,1); \draw(0.5,0.5) node{$A^T_g$};
+    \draw (1,0) rectangle (2,1); \draw(1.5,0.5) node{$B^T_g$};
+    \draw (2,0) rectangle (3,1); \draw(2.5,0.5) node{$d^T$};
+  \end{tikzpicture} }}
+\end{align*}
+
+
+\noindent
+Všechny submatice, značené v uvedených schematech malými
+písmeny, mohou mít jeden nebo více sloupců v závislosti na počtu
+vektorů absolutních členů v rovnicích oprav resp. v
+podmínkových rovnicích. Pro přípravu děrné pásky platí zásada, podle
+níž každá z blokových matic (13.1) až (13.4) musí být
+děrována po řádcích (viz numerické příklady).
+
+
+Srovnání \orig{129} (13.3) resp. (13.4) se (3.34) resp. (7.20)
+ukazuje, že program ORTON3-ZKOUŠKA1 musí při vyrovnání podmínkových
+pozorování resp. podmínkových pozorování s neznámými vytvořit
+výchozí matici $A$ (12.1) transponováním matice vstupních dat
+(13.3) resp. (13.4). Tuto okolnost je třeba mít na paměti při
+interpretaci výsledků, konkrétně při dělení výsledné matice $W$
+na submatice. Kromě toho musí být ovšem brán zřetel i na
+zmíněné diagnostické informace: z kap. 8 např. víme, že při
+ortogonalizaci může v singulárních případech dojít k \uv{samovolnému}
+vytváření nových sloupců v $A$, takže matice $W$ může mít i jiné
+rozměry než výchozí matice $A$.
+
+Pro ilustraci užití programu ORTON3-ZKOUŠKA1 a současnou
+ukázku aplikace postupů a vzorců popsaných v předchozích
+kapitolách, uvedeme nyní numerické příklady řešení čtyř základních
+vyrovnávacích úloh. Řešení každé úlohy budeme dokumentovat
+především výchozí formulací definičních rovnic, přehledem
+vstupních dat, výslednou maticí $W$ a ukázkou užití této matice při
+určování hledaných objektů metodikou z kap. 3 a 7. Podrobnější
+údaje obsahují příl. C až F. Ve všech úlohách budeme pracovat
+s obecnými vahami $p$ pozorovaných hodnot a provádět proto ve
+vstupních datech úpravu násobením resp. dělením příslušných
+koeficientů odmocninami z vah.
+
+
+\newenvironment{Example}[1]{%
+%
+\noindent\hspace*{4ex}\begin{minipage}{6ex}%
+%
+\ifx&#1&%
+\else
+   \bigskip\noindent\hspace*{-4ex}\mbox{\underline{#1} :}%
+\fi
+%
+}{\end{minipage}
+
+\medskip
+}
+
+\arraycolsep=4pt
+%\def\arraystretch{2.2} vertical spacing
+\newcommand{\Sep}{&\hspace*{4ex}&}
+\newcommand{\Label}[1]{\smallskip\noindent\underline{#1}:$\qquad$}
+%
+\input{zkouska1_zprostredkujici.tex}
+\input{zkouska1_zprostredkujici_s_podminkami.tex}
+\input{zkouska1_podminkova.tex}
+\input{zkouska1_podminkova_s_neznamymi.tex}

@@ -1,0 +1,214 @@
+
+V předcházejících \orig{139} kapitolách jsme se zabývali především
+základními úlohami vyrovnávacího počtu a obecnými soustavami
+lineárních algebraických rovnic. Pokusili jsme se vypracovat
+teorii a najít praktické prostředky pro řešení těchto úloh
+univerzálním ortogonalizačním algoritmem. Na závěr ještě v krátkosti
+upozorníme na některé další zajímavé aplikační možnosti
+ortogonalizační metody. Důkazy náslelujících tvrzení a vzorců nejsou
+obtížné a nebudeme je proto uvádět.
+
+\section*{A. Výpočet determinantu}
+
+Pomocí hodnot, získaných při sekvenční ortogonalizaci
+libovolné čtvercové regulární matice $A$ $(n \times n)$, lze snadno určit
+absolutní hodnotu determinantu této matice. Platí
+%
+\begin{align*}
+  \tag{14.1}
+  |\det A| = (\prod_{i=1}^n r_{ii})^{-1}{,}
+\end{align*}
+
+\noindent
+kde $r_{ii}$ jsou diagonální prvky horní trojúhelníkové matice $R^{-1}$
+kterou můžeme najít zobecněnou ortogonalizací jednotkové submatice
+např. podle (11.3). Není-li k dispozici matice RU, může být užito
+alternativní formule
+%
+\begin{align*}
+  \tag{14.2}
+  |\det A| = \prod_{i=1}^n \textrm{ABSMAX} [x,i].\textrm{NORM}[i],
+\end{align*}
+
+\noindent
+kde $\textrm{ABSMAX}[x,i]$ a $\textrm{NORM}[i]$ jsou hodnoty
+tištěné procedurou ORTON3 (kap. 12). Ortogonalizace matice soustavy
+rovnic oprav resp. podmínkových rovnic umožňuje analogicky počítat
+determinant matice $N$ $(n \times n)$ soustavy normálních rovnic, k
+níž vede vyrovnání zprostředkujících nebo nodmínkových pozorování.  Za
+předpokladu, že matice $N$ je regulární, platí
+%
+\begin{align*}
+  \tag{14.3}
+  \det N = (\prod_{i=1} r_{ii})^{-2}
+  = (\textrm{ABSMAX} [x,i].\textrm{NORM}[i])^2,
+\end{align*}
+
+\noindent
+kde $r_{ii}$ jsou opět diagonální prvky matice vzniklé zobecněnou
+ortogonalizací jednotkové submatice - viz např. (3.19) -
+a $\textrm{ABSMAX}[x,i]$ a $\textrm{NORM}[i]$ mají stejný význam jako
+ve (14.2).
+
+\section*{B. Dodatečné připojení skupiny definičních rovnic}
+
+V praxi dochází někdy k tomu, že soustava definičních rovnic je po
+ukončeném vyrovnání doplněna připojením dalších podmínkových rovnic
+nebo rovnic oprav. Hledáme potom opravy a příp.  neznámé, vyhovující
+takto rozšířené úloze, přičemž jsme vedeni přirozenou snahou využít
+výsledků a mezivýsledků, získaných při řešení výchozí úlohy.%
+\footnote{Pro jednoduchost uvažujeme v dalším pouze vyrovnání
+	  podmínkových A zprostředkujících pozorování.}
+
+Při užití ortogonalizačního algoritmu nečiní zřejmě potíží připojení
+podmínkových rovnic při vyrovnání podmínkových pozorování. Toto
+konstatování bezprostředně plyne ze zásady postupného zpracování
+sloupců ortogonalizované matice. Ze stejného důvodu je rovněž možno
+jednoduše připojovat další neznámé při vyrovnání zprostředkujících
+pozorování. Stejné závěry platí i pro vypouštění podmínkových rovnic
+resp. vypouštění neznámých v rovnicích oprav. Např. z výsledků
+vyrovnání zprostředkujících pozorování s $n$ neznámými lze bez
+opakovaného vyrovnání poměrně snadno odvodit opravy a neznámé, které
+jsou řešením $(n-1)$ úloh vzniklých z výchozí úlohy vypuštěním
+postupně posledního, posledních dvou až posledních $(n-1)$ sloupců v
+matici rovnic oprav.
+
+Ortogonalizační algoritmus poskytuje prostředky ke schůdnému
+řešení i druhé vytčené úlohy, tj. připojení skupiny rovnic oprav
+k soustavě rovnic oprav předběžně vyrovnané. Uvažujme
+\uv{rozšířenou} soustavu rovnic oprav
+%
+\begin{align*}
+\tag{14.4}
+\left[\begin{array}{c} v_1 \\ v_2 \end{array}\right] =
+\left[\begin{array}{c} A_1 \\ A_2 \end{array}\right] x +
+\left[\begin{array}{c} \ell_1 \\ \ell_2 \end{array}\right] ,
+\end{align*}
+
+\noindent
+kde $A_1$, $\ell_1$ odpovídají výchozí úloze a $A_2$, $\ell_2$ připojovaným
+rovnicím oprav. Nechť $A_1 = W_1 R_1$ je rozklad matice $A_1$,
+realizovaný při řešení výchozí úlohy ortogonalizací. Potom bychom mohli
+dokázat, že neznámé, určené ve smyslu metody nejmenších čtverců
+ze soustavy (14.4) jsou totožné s neznámými, vypočtenými stejnou
+metodou z náhradní soustavy rovnic oprav.%
+\footnote{Soustavy (14.4) a (14.5) vedou totiž k identickým soustavám
+normálních rovnic.}
+%
+\begin{align*}
+\tag{14.5}
+\left[\begin{array}{c} w_1 \\ v_2 \end{array}\right] =
+\left[\begin{array}{c} R_1 \\ A_2 \end{array}\right] x +
+\left[\begin{array}{c} W^T_1\ell_1 \\ \ell_2 \end{array}\right] .
+\end{align*}
+
+
+\noindent
+Soustava \orig{141} (14.5) bude mít obecně menší počet rovnic oprav
+než soustava (14.4) a její řešení bude proto jednodušší.  Vyrovnáním
+(14.5) budou nalezeny neznámé $x$ a opravy $v_2$, odpovídající
+(14.4). Opravy $v_1$ lze najít dosazením neznámých do rovnic oprav
+(14.4).
+
+Vidíme tedy, že připojení skupiny definičních rovnic
+nepřináší při užití ortogonalizačního algoritmu žádné zvláštní
+obtíže. Z naznačené možnosti vyrovnání ve dvou etapách vyplývá
+potom mj., že ortogonalizace může být v zásadě aplikována při
+řešení rozsáhlých souborů rovnic oprav i tehdy, nestačí-li
+kapacita operační paměti k současnému uložení všech rovnic oprav.
+
+
+\section*{C. Souvislost ortogonalizačního algeoritmu s aproximací pomocí
+ortogonálních polynomů}
+
+V kap. 4 jsme k aproximaci funkce $f(x)$, definované funkčními
+hodnotami na určité množině diskrétních bodů, užili polynomů
+(4.15) tvaru
+%
+\begin{align*}
+\tag{14.6}
+P_n(x) = \sum_{i=0}^n c_i x^i\Punc{.}
+\end{align*}
+
+\noindent
+Z literatury je známo [14] , že je často vhodnější pracovat s
+polynomy alternativní formy
+%
+\begin{align*}
+\tag{14.7}
+P_n(x) = \sum_{i=0}^n d_i \varphi_i(x)\Punc{,}
+\end{align*}
+%
+kde
+%
+\begin{align*}
+\tag{14.8}
+\varphi_i(x) = \sum_{j=0}^i b_{ij} x^j
+\end{align*}
+
+\noindent
+jsou polynomy i-tého stupně $(i=0,1,2,\ldots,n)$ ortonormální na
+množině daných bodů $x_1, x_2,\ldots, x_m$ $(m>n)$. Platí proto
+%
+\begin{align*}
+\tag{14.9}
+\sum_{k=1}^n \varphi_i(x_k) \varphi_j(x_k) = \delta_{ij} \Punc{.}
+\end{align*}
+
+
+Při \orig{142} hledání aproximačního polynomu (14.7) je třeba v každém
+konkrétním případě počítat koeficienty $d_i$, funkční hodnoty
+$\varphi_{ik} = \varphi_i(x_k)$, $(k=1,2,\ldots,m)$ a často ještě
+koeficienty $b_{ij}$ pro převod polynomu (14.7) na tvar
+(14.6). Naznačíme postup pro určení těchto objektů
+ortogonalizací. Předpokládejme, že jsme zobecněným ortogonalizačním
+algoritmem zpracovali matici $\left[
+\begin{array}{c} A \\ E
+\end{array}
+\right]$
+se základní submaticí
+%
+\begin{align*}
+\tag{14.10}
+A =
+\left[
+\begin{array}{cccccccc}
+1 & x_1 & x_1^2 & . & . & . & . & x_1^n \\
+1 & x_2 & x_2^2 & . & . & . & . & x_2^n \\
+. & .   & .     & . & . & . & . & .    \\
+. & .   & .     & . & . & . & . & .    \\
+1 & x_m & x_m^2 & . & . & . & . & x_m^n \\
+\end{array}
+\right]
+\end{align*}
+
+\noindent
+a vedlejší jednotkovou maticí $E$. Získali jsme tak v souladu se
+(3.17) a (3.18) matice $W$ a $R^{-1}$, které jsou podle (2.10) spojeny
+s maticí $A$ vztahem $W = AR^{-1}$. Označme ještě $f$ vektor, tvořený
+danými funkčními hodnotami $f_1,f_2,\ldots,f_m$ funkce $f(x)$. Potom je
+možno dokázat,že platí
+%
+\begin{align*}
+        \tag{14.11}
+        d = W_Tf\Punc{,}
+\end{align*}
+%
+\begin{align*}
+        \tag{14.12}
+        b_{ij} = r_{j+1,i+1}\Punc{,} \quad
+        (i=0,1,2,\ldots,n)\Punc{,} \quad
+        (j=0,1,2,\ldots,i)\Punc{,}
+\end{align*}
+
+\noindent
+kde vektor $d$ je tvořen hledanými koeficienty v rozvoji (14.7)
+a $r_{ij}$ představuje prvek,ležící v j-tém řádku a i-tém sloupci
+matice $R^{-1}$. Matice $W$ obsahuje potom hledané funkční hodnoty
+polynomů $\varphi_i$ v bodech $x_1, x_2, \ldots, x_,$.
+Pro $i=0,1,2,\ldots,n$ a $k=1,2,\ldots.m$ platí
+%
+\begin{align*}
+   \tag{14.13}
+   \varphi_{ik} = w_{k,i+1}\Punc{.}
+\end{align*}

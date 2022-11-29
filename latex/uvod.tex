@@ -1,0 +1,166 @@
+Z počtářské praxe je známo,\orig{3}
+že numerické řešení určité
+úlohy dvěma různými postupy, založenými na odlišných algebraických
+formulacích, obecně vede k různým
+výsledkům%
+%
+{%
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}%
+\footnote{Původní číslování stránek
+ve vydání z roku 1972 je uváděno na okraji textu.}%
+}.
+%
+Přitom přesnost
+výsledků nemusí být v obou případech stejná. Ne všechny postupy
+jsou totiž stejně citlivé k chybám ze zaokrouhlování a příp. k
+chybám výchozích veličin, ne u všech metod dochází během výpočtu
+ke stejně rychlým ztrátám platných cifer. V této souvislosti
+je obvyklé srovnávat tzv. numerickou stabilitu různých metod.
+Říkáme, že některá metoda je stabilnější než jiná, vede-li k
+řešení s více platnými ciframi, tj. méně znehodnocenému zmíněnými
+chybami.
+
+Kritické posouzení numerické stability při výběru metody pro
+řešení určitého oboru úloh má značný význam, zejména při užití
+samočinných počítačů. Zatímco při ručním výpočtu můžeme poměrně
+dobře sledovat a případně i regulovat výpočetní přesnost,
+automatizuje samočinný počítač dlouhé posloupnosti aritmetických
+operací a zbavuje tak počtáře přímé možnosti průběžné analýzy
+šíření chyb ve výpočetním procesu. Tato skutečnost je tím
+závažnější, že rychlost, vysoká paměťová kapacita a další přednosti
+počítačů dávají základní předpoklady pro řešení problémů se
+stále rostoucím rozsahem i počtářskou náročností
+
+Numerická stabilita není jedinou vlastností, kterou by měla
+mít moderní numerická metoda. Dalšími vítanými vlastnostmi jsou
+např. obecnost metody, zaručující řešení co nejširšího okruhu
+úloh a jednoduchý, nejlépe cyklický charakter odpovídajícího
+algoritmu, vedoucí ke snadnému sestavení programu pro počítač.
+Dále je vhodné, aby metoda poskytovala prostředky k automatické
+diagnóze úlohy, tj. aby umožnila zavčas identifikovat případné
+singularity, signalizovat nepřiměřenou ztrátu platných cífer
+apod. Na druhé straně není vzhledem k vysoké rychlosti počítačů
+při výběru metody zpravidla\orig{4} rozhodující potřebný počet
+aritmetických operací.
+
+V předložené práci odvodíme metodu a algoritmus (ORTON) pro
+řešení základních úloh vyrovnávacího počtu, mající uvedené
+vlastnosti. Základními úlohami vyrovnávacího počtu budeme
+přitom rozumět úlohy následujících čtyř typů
+%
+\begin{itemize}
+\item[a)] vyrovnání zprostředkujících pozorování
+
+\item[b)]vyrovnání podmínkových pozorování
+
+\item[c)] vyrovnání zprostředkujících pozorování s podmínkami
+(typ IC - intermediate observations with conditions)
+
+\item[d)] vyrovnání podmínkových pozorování s neznámými - tzv.
+obecná úloha vyrovnávacího počtu (typ CU - conditioned
+observations with unknowns)
+\end{itemize}
+%
+včetně určení váhových koeficientů. Ve všech čtyřech případech
+budeme předpokládat, že odpovídající definiční rovnice (tj.
+rovnice oprav resp. podmínkové rovnice) jsou lineární, a že
+vyrovnáváme nekorelovaná pozorování. Navržená metoda patří mezi
+přímé (finitní) metody řešení vyrovnávacích úloh, nevyžadující
+sestavení a řešení normálních rovnic. Opouští tedy tradiční
+\name{GAUSSŮV} postup, o němž se v práci ukazuje, že je obecně méně
+numericky stabilní. Popisovaná metoda je založena na modifikované
+\name{GRAMOVĚ-SCHMIDTOVĚ} ortogonalizaci, korigované doortogonalizací.
+Bude vyvozena s užitím principu extremélních vah
+\name{H.H.SCHMIDA}.
+
+Vedle problematiky, přímo spojené s odvozením metody a jejím
+užitím k řešení základních úloh vyrovnávacího počtu, jsou
+v práci studovány ještě další otázky. Např. v kap. 6 je podrobněji
+analyzován princip doortogonalizace a jsou formulovány dvě věty
+o jeho obecném přínosu ke zpřesnění ortogonalizačního procesu.
+Kap. 8 přináší rozbor singularit, které se mohou vyskytnout při
+řešení základních vyrovnávacích úloh a naznačuje jeden z možných
+způsobů jejich zpracování. V kap. 9 jsou dále definovány dvě
+varianty ortogonalizačního algoritmu, tzv. varianta sekvenční a
+varianta selektivní, a jsou odvozeny některé odhady pro posouzení
+přesnosti výsledků ortogonalizace. Teoretické úvahy z kap. 9
+%
+%
+jsou numericky ilustrovány v kap. 10.\orig{5}
+Následující kap. 11
+ukazuje, že ortogonalizační metody může být užito i k~řešení
+soustav lineárních algebraických rovnic, a to nejen se čtvercovou
+regulární maticí, ale i s maticemi singulárními, příp.
+obdélníkovými. Lze jí řešit i soustavy homogenní. Algoritmus ORTON
+realizuje procedura s označením ORTON3, sestavená v jazyce
+ALGOL pro počítač ELLIOTT 503. Vlastní procedura je uložena v
+příl. A, její bližší popis obsahuje kap. 12. Možnost praktického
+užití procedury ilustruje kap. 13. Závěrečná kapitola
+krátce upozorňuje na některé další aplikace ortogonslizačního
+algoritmu.
+
+Studium monografie předpokládá u čtenáře vedle znalosti
+vyrovnávacího počtu i základní orientaci v dalších matematických
+disciplinách, zejména v maticovém počtu, lineární algebře,
+numerických metodách a programování. Pro úvodní seznámení
+s problematikou těchto oborů, jejichž význam je pro současnou
+geodézii nesporný, odkazujeme na následující díla:
+
+\pagebreak[3]
+
+\begin{itemize}
+
+\item[a)] maticový počet
+  \begin{itemize}
+  \item[] \name{B.BYDŽOVSKÝ}: Úvod do theorie determinentů a matic,
+          NČSAV, Praha 1954
+  \item[] \name{O.BORŮVKA}: Základy teorie matic. ACADEMIA, Praha 1971
+  \end{itemize}
+
+\item[b)] lineární algebra
+  \begin{itemize}
+  \item[] \name{I.M.GELFAND}: Lineární algebra. NČSAV, Praha 1953
+  \item[] \name{G.E.ŠILOV}: Matematičeskij analiz (konečnoměrnyje
+    linějnyje prostranstva). Na\-u\-ka, Moskva 1969
+  \end{itemize}
+
+\item[c)] numerické metody
+  \begin{itemize}
+  \item[] \name{O.SLAVÍČEK} a kol.: Základní numerické metody. SNTL,
+          Praha 1964
+  \item[] \name{D.K.FADDĚJEV}, \name{V.N.FADDĚJEVOVÁ}:
+          Numerické metody lineární
+          algebry. SNTL, Praha 1964
+  \end{itemize}
+
+\item[d)] programování
+  \begin{itemize}
+  \item[] \name{J.RAICHL}: Programování pro samočinné počítače.
+          ACADEMIA, Praha 1972
+  \item[] \name{J.RAICHL}: Programování v ALGOLu.
+          ACADEMIA, Praha 1971
+  \end{itemize}
+
+\item[e)] užití matic ve vyrovnávacím počtu\orig{6}
+  \begin{itemize}
+  \item[] \name{H.WOLF}: Auscleichungsrechnung nach der Methode der
+    kleinsten Ouadrate. Dümmler, Bonn 1968.
+
+  \end{itemize}
+
+\end{itemize}
+
+
+
+
+
+\noindent Poděkování.\\[-1em]
+
+Autor děkuje recenzentům prof.\ Ing.\ dr.\ J.\ Böhmovi, DrSc.,
+prof.\ Ing.\ dr.\ J.\ Vykutilovi, doc.\ RNDr.\ Z.\ Nádeníkovi, DrSc.\ a
+Ing.\ V.\ Radouchovi, CSc.\ za podnětné připomínky k rukopisu
+práce, které mj.\ přispěly k jejímu zlepšení při konečné úpravě
+textu. Děkuje dále svým spolupracovnicím ve Výzkumném
+ústavu geodetickém, topografickém a kartografickém,
+Aleně Stádníkové za pomoc při výpočtech na počítači a vyhotovení
+čistopisu, Janě Vaňkové za doplnění čistopisu vzorci a obrázky.

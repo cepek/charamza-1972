@@ -1,0 +1,159 @@
+% viz program_orton3_zkouska1.tex :
+%
+% \input{zkouska1_zprostredkujici.tex}
+% \input{zkouska1_zprostredkujici_s_podminkami.tex}
+% \input{zkouska1_podminkova.tex}
+% \input{zkouska1_podminkova_s_neznamymi.tex}
+%
+% -----------------------------------------------------------
+
+\section*{Vyrovnání zprostředkujících pozorování s podmínkami}
+
+
+\begin{Example}{Formulace úlohy}
+\begin{align*}
+\arraycolsep=3pt
+\begin{array}{crrrrrrrrrrrr}
+   v_1 &=& 0,50x_1 &+& 1,00x_2 &+& 0,50x_3 &+& 0,50 \Sep  p_1 &=&  4 \\
+   v_2 &=& 0,50x_1 &+& 0,75x_2 &+& 0,50x_3 &+& 0,00 \Sep  p_2 &=& 16 \\
+   v_3 &=& 3,00x_1 &+& 4,00x_2 &+& 3,00x_3 &+& 2,00 \Sep  p_3 &=&  1 \\
+   v_4 &=& 0,80x_1 &+& 1,00x_2 &+& 0,40x_3 &-& 0,20 \Sep  p_4 &=& 25 \\
+   v_5 &=& 1,25x_1 &+& 1,50x_2 &+& 0,25x_3 &+& 0,75 \Sep  p_5 &=& 16 \\
+   0   &=& 1,00x_1 &+& 2,00x_2 &-& 1,00x_3 &+& 3,00 \\
+   0   &=& 2,00x_1 &-& 3,00x_2 &+& 2,00x_3 &-& 4,00 \\
+\end{array}
+\end{align*}
+\end{Example}
+%
+
+\noindent Funkce vyrovnaných veličin $g_1, g_2, g_3, g_4$ mají stejný
+tvar jako v odst. 13.1.
+
+\begin{Example}{Vstupní data}
+%\bgroup\setlength{\abovedisplayskip}{0pt}
+\begin{align*}
+\begin{array}{rrrrrrrrr}
+ 5 &  2 & 4 & 3 & 3 & 0 & 0 & 1 & 1 \\
+\multicolumn{4}{l}{0.1 ~~ 10^{-6} ~~ 1} \\
+\end{array}
+\\
+\begin{array}{rrr|r|rr}
+1 & 2 & 1 &  1 & 3 & 1 \\
+2 & 3 & 2 &  0 & 2 & 0 \\
+3 & 4 & 3 &  2 &-1 & 1 \\
+4 & 5 & 2 & -1 & 1 & 2 \\
+5 & 6 & 1 &  3 & 2 &-1 \\
+\hline
+1 & 2 &-1 &  3 & 0 & 0 \\
+2 &-3 & 2 & -4 & 0 & 0 \\
+\hline
+1 &-3 &-1 &  1 & 0 & 0 \\
+2 & 1 & 0 & -3 & 0 & 0 \\
+\hline
+19& 22& 7 &  7 & 0 & 0 \\
+ 9& 11& 7 & -5 & 0 & 0 \\
+\end{array}
+\end{align*}
+%\egroup
+\end{Example}
+
+
+\orig{133}
+\begin{Example}{Matice W}
+\begin{align*}
+\begin{tabular}{rr|r|r|rr}
+  0,447214 &  0,894427 &  0,236508 &  0,810502 &  2,448630 &  0,672374 \\
+  0,894427 &  1,469416 &  0,405442 &  0,246575 &  1,054794 & -0,516644 \\
+  1,341641 &  2,044405 &  0,574377 &  2,682648 & -2,339041 &  0,204338 \\
+  1,788854 &  2,619394 &  0,506803 & -2,691781 & -0,181507 &  1,297945 \\
+  2,236068 &  3,194383 &  0,439229 & -1,066210 &  0,976027 & -1,608447 \\
+  \hline
+  0,447214 &  0,894427 & -5,613447 &  4,824201 & -1,770548 &  1,918950 \\
+  0,894427 & -0,447214 & -0,690217 &  0,961187 &  0,037671 &  0,384703 \\
+  \hline
+  0,447214 & -0,702764 & -0,337869 &  1,127854 &  0,787671 &  0,468037 \\
+  0,894427 &  0,830540 &  0,033787 & -4,312785 & -0,078767 & -0,046804 \\
+  \hline
+  8,497058 & 11,883104 &  1,993425 & -3,454338 & -4.647260 & -2,761416 \\
+  4,024922 &  5,813777 &  1,419049 & -5,136986 & -3,308219 & -1,965753 \\
+  \hline
+  0,447214 &  0,255551 & -0,016893 & -0,343607 &  0,039384 &  0,023402 \\
+  0,000000 &  0,319438 &  0,067574 & -0,625571 & -0,157534 & -0,093607 \\
+  0,000000 &  0,000000 &  0,118254 &  1,405251 & -0,275685 & -0,163813 \\
+\end{tabular}
+\end{align*}
+\end{Example}
+
+
+\Label{Opravy}
+%
+$v_i = p_i^{-{1\over2}}w_{i4}\qquad(i=1,2,\ldots,5)$
+
+\smallskip
+ $v_1 = 0,405251, \quad v_2 = 0,061644, \quad v_3 = 2,682648,\
+ \quad v_4 = -0,538356,\quad v_5 =-0,266553$ .
+
+\Label{Neznámé}
+%
+$x_i = w_{11+i,4} \qquad(i=1,2,3)$
+
+\smallskip
+        $x_1=-0,343607,  \quad x_2=-0,625571, \quad x_3=1,405251$ .
+
+\Label{Funkce vyrovnaných veličin (obecný tvar)}
+%
+$g_i = w_{7+i,4} + \sum_{j=1}^5 w_{j,4} w_{j,4+i} \qquad (i=1,2)$
+
+\smallskip
+ $g_1 = -3,454337, \quad g_2 = -5,136985$ .
+
+\Label{Funkce vyrovnaných veličin (speciální tvar)}
+%
+$g_i = w_{7+i,4} \qquad (i=3,4)$
+
+\smallskip
+ $g_3 = -3,454338, \quad g_4 = -5,136986$ .
+
+
+\Label{Váhové koeficienty}
+
+$q_{L_iL_j} = (p_ip_j)^{-{1\over2}}  w_{i3} w_{j3}\
+\qquad (i,j=1,2,\ldots,5)$
+
+\smallskip
+~~~např. $q_{L_1L_1} = 0,01398 \qquad q_{L_1L_5} = 0,012985$ ,
+
+\orig{134}
+\smallskip
+$q_{L_ix_j} = p_i^{-{1\over2}}\sum_{k=j} w_{i3}w_{11+j,3}\
+\qquad (i=1,2,\ldots,5), \quad (j=1,2,3)$
+
+\smallskip
+~~~např. $q_{L_3x_2} = 0,038813$ ,
+
+\smallskip
+$q_{L_ig_j}=p_i^{-{1\over2}} w_{i3}w_{11+j,3}\qquad(i=1,2,\ldots,5),\
+\quad(j=3,4)\quad$ - speciální tvar funkcí
+
+\smallskip
+~~~např. $q_{L_3g_3} = 1,144977$ ,
+
+\smallskip
+$q_{x_ix_j} = w_{11+i,3} w_{11+j,3} \qquad (i,j=1,2,3)$
+
+\smallskip
+~~~např. $q_{x_2x_2} = 0,004566 \qquad q_{x_2x_3} = 0,007991$ ,
+
+\smallskip
+$q_{x_i g_j} = w_{7+j,3} w_{11+i,k} \qquad \
+(i=1,2,3), \quad (j=3,4)\quad$ - speciální tvar funkcí
+
+\smallskip
+~~~např. $q_{x_2g_3} = 0,134704$ ,
+
+\smallskip
+$q_{g_ig_j} = w_{7+i,3} w_{7+j,3}\
+\qquad (i,j=3,4)\quad$ - speciální funkce
+
+\smallskip
+~~~např. $q_{g_3g_3} 3,973743 \qquad q_{g_3g_4} = 2,828768$ .

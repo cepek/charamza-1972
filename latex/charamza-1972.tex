@@ -1,0 +1,253 @@
+%%% Preamble
+%
+\documentclass[paper=a4, fontsize=11pt]{scrreprt}%{scrartcl}
+%
+%
+% https://tex.stackexchange.com/questions/490069/incomplete-iffalse-all-text-was-ignored
+%
+% It's the same old problem with Czech and Slovak babel that causes
+% problems all the time, see: [1], [2]. The babel packages replace all
+% hyphens “-” with a dash or something, which breaks a ton of other
+% packages. To turn this “feature” off, just add this to the preamble:
+%
+\AtBeginDocument{\shorthandoff{-}}
+%
+% ------------------------
+% ladeni kapitol: 1) zakomentaruji definici PLNYTEXT
+%                 2) pro danou kapitolu prejmenuji \Input na \input
+%
+% Prikaz \input je uveden ve slozenych zavorkach, veskere pripadne
+% definice jsou lokalni v danem souboru.
+\def\PLNYTEXT{}
+\newcommand{\Input}[1]{\ifdefined\PLNYTEXT{\input{#1}}\fi}
+%
+% ------------------------
+%
+\usepackage{lscape}
+\usepackage{courier}
+\usepackage{listings}
+\lstset{
+  morekeywords={and,array,begin,boolean,comment,do,end,for,goto,if,integer,
+  else,not,or,own,parameter,print,procedure,real,step,switch,then,until,value
+  },
+  %frame=tblr,framesep=4pt,
+  frame=l,framesep=8pt,
+  escapeinside={@:}{:@},
+  showstringspaces=false,
+  basicstyle=\ttfamily\small
+}
+\newcommand{\Tag}{\hfill\rmfamily}
+\newcommand{\TT}[1]{{\texttt{#1}}}
+\newcommand{\GBP}{\text{\textsterling}}
+\newcommand{\GBPP}{\text{\textsterling\textsterling}}
+%%% https://en.wikipedia.org/wiki/ALGOL
+%%%
+%%% Below is a version from Elliott 803 Algol (A104). The standard Elliott
+%%% 803 used five-hole paper tape and thus only had upper case. The code
+%%% lacked any quote characters so £ (UK Pound Sign) was used for open
+%%% quote and ? (Question Mark) for close quote. Special sequences were
+%%% placed in double quotes (e.g. ££L?? produced a new line on the
+%%% teleprinter).
+%%%
+%
+%
+\usepackage{diagbox}
+\usepackage{fancyvrb}
+\usepackage{fourier}
+\usepackage{tikz}
+%
+%  Recent LaTeX kernels have incorporated the greater part of etex, so
+%  it's quite unlikely that one needs to load it nowadays.
+%
+\usepackage{etoolbox}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{enumitem}% viz literatura
+\usepackage[hang,flushmargin]{footmisc}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{hhline,multirow}
+\usepackage{longtable}
+
+\input{jmena}
+
+\usepackage[czech,russian,polish,french,english,german]{babel}
+
+\usepackage[protrusion=true,expansion=true]{microtype}
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage{url}
+
+
+\DeclareMathOperator{\cond}{cond}%  condition number
+
+
+%%% Custom sectioning
+\usepackage{sectsty}
+\allsectionsfont{\centering \normalfont\scshape}
+
+\usepackage{subcaption}
+\usepackage{enumitem}
+
+\newcommand{\Subsubsection}[1]{\vspace{1em}#1.~~ }
+%  used instead of original typewriter underline
+\newcommand{\Xemph}[1]{{\em #1}}
+%  matrix A with or without indexes
+\newcommand{\Amat}[1]{\ensuremath{A\ifstrempty{#1}{}{_{#1}}}}
+\newcommand{\Bmat}[1]{\ensuremath{B\ifstrempty{#1}{}{_{#1}}}}
+\newcommand{\Wmat}[1]{\ensuremath{W\ifstrempty{#1}{}{_{#1}}}}
+\newcommand{\Ocal}[1]{\ensuremath{\mathcal{O}(#1)}}
+\newcommand{\Pozn}[1]{\underline{Poznámka\ifstrempty{#1}{}{ {#1}}}.~}
+
+\newcommand{\Amxn}{\ensuremath{A\,(m\times{}n)}}
+\newcommand{\Anxn}{\ensuremath{A\,(n\times{}n)}}
+\newcommand{\OA}  {\ensuremath{(\overrightarrow{\mathrm{OA}})}}
+\newcommand{\OW}  {\ensuremath{(\overrightarrow{\mathrm{O%
+        \widetilde W}}\,')}}
+\newcommand{\OWi} {\ensuremath{(\overrightarrow{\mathrm{O%
+        \widetilde W}})}}
+\newcommand{\OWii}{\ensuremath{(\overrightarrow{\mathrm{O%
+        \widetilde W}}\,'')}}
+
+% odsazené tečky a čárky za velkými rovnicemi, typicky s grafikou
+\newcommand{\Punc}[1]{~#1}
+\newcommand{\Wtld}[1]{\ensuremath{{widetilde #1}}}
+
+\def\orig#1{\marginpar{- #1 -}}
+
+\def\Chapter#1{%
+  \stepcounter{chapter}%
+  \chapter*{\thechapter. #1}%
+  \addcontentsline{toc}{chapter}{\thechapter. #1}%
+}
+
+\newlength{\BMdx}  %  block matrix cell size
+\newlength{\BMdy}
+
+\hyphenation{
+  pod-pros-to-ru
+  %re-ku-rent-nı́mi
+}
+
+\begin{document}
+\selectlanguage{czech}
+
+\begin{titlepage}
+  \begin{center}
+    \vspace*{\stretch{1}}
+    {
+    \usefont{OT1}{bch}{b}{n}
+    \rule{\linewidth}{1pt}\\[0.4cm]
+    \huge{Řešení základních úloh\\
+    vyrovnávacího počtu\\
+    ortogonalizační metodou}\\
+    \rule{\linewidth}{2pt}\\[1.3cm]
+    }
+
+    {\Large
+    František Charamza\\
+    Praha 1972\\
+    \date{}
+    }
+    \vspace*{\stretch{3}}
+    \footnotesize{Reedice prosinec 2022}
+  \end{center}
+\end{titlepage}
+
+
+\tableofcontents
+
+\Chapter{Úvod}
+\Input{uvod}
+
+\Chapter{Gramova--Schmidtova ortogonalizace}
+\Input{gso}
+
+\Chapter{Ortogonalizace rovnic oprav a~podmínkových měření}
+\Input{rovopr-podmer}
+\Input{podmin-pozorovani}
+\Input{dalsi-moznosti}
+
+\Chapter{Úvaha o numerické stabilitě}
+\Input{stabilita}
+
+\Chapter{Princip extremálních vah H. H. Schmida}
+\Input{extremalni-vahy}
+
+\Chapter{Doortogonalizace a algoritmus ORTON}
+\Input{doortogonalizace}
+
+\Chapter{Vyrovnání zprostředkujících pozorování s podmínkami
+  a podmínkových pozorování s~neznámými}
+\Input{kombinovane}
+
+\Chapter{Řešení singulárních úloh}
+\Input{singularni}
+
+\Chapter{Úvaha o šíření chyb v~\name{GRAMOVĚ-SCHMIDTOVĚ} ortogonalizaci}
+\Input{sireni_chyb}
+
+\Chapter{Příklady řešení dvou špatně podmíněných úloh}
+\Input{priklady_reseni}
+
+\Chapter{Řešení soustav lineárních algebraických
+  rovnic ortogonalizací}
+\Input{reseni_soustav}
+
+\Chapter{Procedura ORTON3}
+\Input{procedura_orton3}
+
+\Chapter{Program ORTON3-ZKOUŠKA1}
+\Input{program_orton3_zkouska1}
+
+\Chapter{Závěr}
+\Input{zaver}
+
+\Chapter{Literatura}
+\Input{literatura}
+
+\chapter*{Přílohy}
+\addcontentsline{toc}{chapter}{\protect\numberline{}Přílohy}
+
+\setcounter{chapter}{0}
+\renewcommand{\thechapter}{\Alph{chapter}}
+
+
+\Chapter{Procedura ORTON3}
+\Input{a-procedura_orton3}
+
+\Chapter{Program ORTON3 -- ZKOUŠKA1}
+\Input{b-program_orton3_zkouska1}
+
+\newcommand{\X}[2]{#1${}_{\texttt{10}}$#2\!\!}
+% stejna verze jako v kapitole/souboru procedura_orton3.tex,
+% jina verze je pouzita v reseni_soustav.tex (bez \!\!)
+%
+\newcommand{\TOL}{TOL~~~=~}
+\newcommand{\MIN}{TOLMIN=~}
+\newcommand{\COL}{COLUMN NO.:~~~~\,}
+\newcommand{\TRY}{TRY COL. NO~~~~\,}
+\newcommand{\ABS}[3]{ABSMAX[\makebox[6ex][r]{#1},\makebox[7ex][r]{#2}]=~#3}
+\newcommand{\NOR}[2]{NORM[\makebox[7ex][r]{#1}]=~#2}
+\newcommand{\REP}{REPEATED ORTHOG.}
+%
+\newcommand{\Colind}[1]{\makebox[25ex][c]{#1}}
+\newcommand{\Y}[2]{\makebox[25ex][r]{\X{#1}{#2}}}
+%
+\Chapter{Úloha 13.1 -- tisk výsledků}
+\Input{13.1-tisk_vysledku}
+\Chapter{Úloha 13.2 -- tisk výsledků}
+\Input{13.2-tisk_vysledku}
+\chapter{Úloha 13.3 -- tisk výsledků}
+\Input{13.3-tisk_vysledku}
+\Chapter{Úloha 13.4 -- tisk výsledků}
+\Input{13.4-tisk_vysledku}
+
+\addcontentsline{toc}{chapter}{Resumé}
+\Input{abstract-rus.tex}
+\Input{abstract-deu.tex}
+\Input{abstract-eng.tex}
+\selectlanguage{czech}%
+
+\end{document}

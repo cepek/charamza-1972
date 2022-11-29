@@ -1,0 +1,213 @@
+Ve výpisu procedury je užito k označení čtyř formálních
+parametrů jiné symboliky než v kap.~12; identifikátory
+\TT{m2}, \TT{m3}, \TT{tol}, \TT{tolmin} z kap.~12 jsou zastoupeny
+identifikátory \TT{nz}, \TT{m2}, \TT{tol1}, \TT{tol2}.
+
+\orig{150}
+%
+% [mathescape] --> $\GBP$ tj. $\textsterling$ etc.
+%
+\begin{lstlisting}[mathescape]
+procedure ORTON3(A,m1,nz,m2,n1,n2,defect,tol1,tol2,magn,change,INDEX);
+value m1,nz,n2,defect,tol1,tol2,magn,change;
+integer m1,nz,m2,n1,n2,defect; real tol1,tol2,magn; boolean change;
+array A; integer array INDEX;
+
+begin integer m,n,nmax;
+      m:=m1+nz+m2; n:=n1+n2; nmax:=n+defect;
+begin comment block;
+integer i,i1,jlast,lmin,lmax; real norm; integer array INDORT[1:nmax];
+array NORMS[1:nmax],COLJ,COLK[1:m+defect];
+
+
+procedure max(AR,lbound,ubound,maxel,imax);
+value lbound,ubound;
+integer lbound,ubound,imax; real maxel; array AR;
+begin integer i;
+      maxel:=0,0; imax:=ltbound;
+      for i:=lbound step i until ubound do
+            if abs(AR[i])>maxel then
+                  begin maxel:=abs(AR[i]); imax:=i end
+end max;
+
+
+procedure lincom(prodlb,produb,comblb,combub);
+value prodlb,produb,comblb,combub;
+integer prodlb,produb,comblb,combub;
+begin integer i; real prod;
+      prod:=0,0;
+      for i:=prodlb step 1 until produb do prod:=prod+COLJ[i]*COLK[i];
+      for i:=comblb step 1 until combub do COLK[i]:=COLK[i]-prod*COLJ[i]
+end lincom;
+
+
+procedure Euclid(i1,i2); integer i1,i2;
+begin integer i;
+      norm:=0.0;
+      for i:=i1 step 1 until i2 do norm:=norm+COLK[i]*COLK[i];
+      norm:=sgrt(norm);
+end Euclid;
+
+
+real procedure random(a,b,x0);
+value a,b,xO; real a,b; integer x0;
+begin own integer x,m35,m36,m37;
+      if x0$\ne$0 then
+      begin in x:=x0; m35:=34359738368; m36:=68719476736; m37:=137438953472 end;
+      x:=5*x;
+      if x$\ge$m37 then x:=x-m37; if x$\ge$m36 then x:=x-m36;
+      if x$\ge$m35 then x:=x-m35; random:=x/m35*(b-a)+a
+end random;
+\end{lstlisting}
+
+\orig{151}
+\begin{lstlisting}[mathescape]
+procedure ort(colmin, colmax,B4,B5);
+value colmin,colmax,B4,B5; integer colmin,colmax; boolean B4,B5;
+begin integer i,j,jj,jmax,k,rub; real maxim,normax;  Boolean B2,B3;
+      switch SS:=LAB1,LAB3,LAB4,LAB5,LAB6,LAB7,LAB8,LAB9,LAB10,LAB11,
+                 LAB12,LAB13,1AB14;
+
+      B3:=true; rub:=n1;
+
+      for i:=colmin step 1 until colmax do
+      begin print $\GBPP$14?COLUMN NO.:?,i;
+      k:=i; B2:=true; if not B3 then goto LAB8;
+LAB1: print $\GBPP$1?TRY COL. NO.?,k;
+      if NORMS[k]$\ge0$ then begin print $\GBPP$s2?SMALL NORM?; goto LAB4 end;
+      for j:=1 step 1 until m do COLK[ j):=A[j,k];
+      if INDORT[k]$\ne$0 then goto LAB3;
+      max(COLK,1,m1+nz,maxim,j);
+      print $\GBPP$1?ABSMAX[?,j,$\GBP$,?,k ,$\GBP$]=?, maxim;
+      if maxim=0.0 then
+      begin print $\GBPP$s2?ZERO COLUMN?;
+            if not B4 and i=k then goto LAB11;
+            NORMS[k]:=0.0; goto LAB4;
+      end;
+      if abs(magn-1.0)>0.1 then
+      begin if magn>1.0 and j>m1 then maxim:=maxim*magn;
+            if magn<1.0 and j<m1 then maxim:=maxim/magn
+      end;
+      for j:=1 step 1 until m do COLK[j]:=COLK[j]/maxim;
+LAB3: jmax:=if B5 then i-1 else n1;
+      for j:=INDORT[k]+1 step 1 until jmax do
+      begin
+            if j$\ne$jlast then for jj:=1 step 1 until m do COLJ[jj]:=A[jj,j];
+            if j>nz then lincom(1,m1,1,m) else
+            if B2 or B4 then lincom(lmin,lmax,1,m) else lincom(1,m1,lmin,lmax);
+            INDORT[k]:=INDORT[k]+1;
+            jlast:=j;
+      end j;
+      if B4 then Euclid(lmin,lmax) else Euclid(1,m1);
+      print $\GBPP$1?NORM[?,k,$\GBP$]=?,norm;
+      if norm>tol1 then goto LAB12;
+      print $\GBPP$S2?<TOL?;
+      if not change then
+      begin
+            if norm<tol2 then begin print $\GBPP$S2?<TOLMIN?; goto LAB10 end;
+            if not B2 then goto LAB13;
+            if nz$\ne$0 then goto LAB6;
+            goto LAB7
+      end;
+      if not B2 then goto LAB13;
+      if not B3 then
+      print $\GBPP$1?GENERATED COL. IS LIN. DEP.?; goto LAB9 end;
+      NORMS[k]:=norm;
+      for j:=1 step 1 until m do A[j,k]:=COLK[j];
+      if i1$\ne$0 then goto LAB5;
+LAB4: if k<rub then begin k:=k+1; goto LAB1 end;
+      i1:=i-1; print $\GBPP$l?RUBBISH?;
+\end{lstlisting}
+
+\orig{152}
+\begin{lstlisting}[mathescape]
+LAB5: i1:=i1+1;
+      if i1$\le$n1 then
+      begin
+            if (INDORT[i1]==i-1) or NORMS[i1]<tol2 then goto LAB5;
+            for j:=1 step 1 until m do COLK[j]:=A[j,i1];
+            k:=i1; print $\GBPP$1?UPDATE COL. NO.?,k; goto LAB3
+      end;
+      i1:=0; max(NORMS,i,n1,normax,k); rub:=k;
+      print $\GBPP$1?BEST COL. NO.?,k,$\GBPP$s?WIT1H NORM?,normax;
+      if normax$\ge$tol2 then
+      begin
+            for j:=1 step 1 until m do COLK[j]:=A[j,k];
+            if not B4 then
+LAB6:       for j:=m1+1 step 1 until m1+nz do COLK[j]:=0.0;
+LAB7:       B2:=false; print $\GBPP$1?REPEATED ORTHOG.?;
+      end else
+      begin print $\GBPP$s2<TOLMIN?;
+            B3:=false;
+LAB8:       if nz$\ne$0 and B4 then
+            begin
+                  n:=n+1; rub:=k:=n1:=n1+1; INDEX[n]:=n1; jlast:=0;
+                  for j:=1 step 1 until m do A[j,n]:=A[i,n1];
+                  m:=m+1; m2:=m2+1;
+                  for j:= 1 step 1 until n do A [m,j]:=0.0;
+                  print $\GBPP$1?REPLACE?,n1,$\GBPP$s2?-->?,n;
+                  INDEX[n1]:=-n1;
+                  print $\GBPP$1?GENERATED COL. NO. ?,k;
+LAB9:             for j:=1 step 1 until m-1 do COLK[j]:=0.0;
+                  for j:=m1+1 step 1 until m1+nz do
+                  begin
+                        COLK[j]:=random(-1.0,1.0,0);
+                        print $\GBPP$1??,j,prefix($\GBPP$s2??),COLK[j]
+                  end;
+                  COLK[m]:=1,0
+            end else
+LAB10:      begin
+                  for j:=1 step 1 until m1+nz do A[j,i]:=COLK[j]:=0.0;
+LAB11:            print $\GBPP$1?LIN. DEP. COL. NO.?,INDEX[i];
+                  if not B5 then goto LAB13;
+                  for j:=m1+nz+1 step 1 until m do
+                  begin
+                        print $\GBPP$1??,j,prefix($\GBPP$s2??),
+                              if B3 then COLK[j] else A[j,i];
+                        A[j,i]:=0.0
+                  end j;
+                  goto LAB14
+            end;
+      end;
+\end{lstlisting}
+\orig{153}
+\begin{lstlisting}[mathescape]
+      INDORT[k]:=0; goto LAB3;
+LAB12:if not B4 and B2 and nz$\ne$0 then goto LAB6;
+LAB13:if not B5 then norm:=if maxim=0.0  then 1.0 else 1.0/maxim;
+      if i$\ne$k then
+      begin
+            if k$\ne$rub then for j:=1 step 1 until m do A[j,k]:=A[j,rub];
+            print $\GBPP$1?REPLACE?,i,prefix($\GBPP$2?-->?),rub,k,i;
+            for j:=1 step 1 until m do A[j,rub]:=A[j,i];
+            j:=INDEX[k]; INDEX[k]:=INDEX[rub]; INDEX[rub]:=INDEX[i];
+            IXDEX[i]:=j; NORMS[k]:=NORMS[rub]; NORMS[rub]:=NORMS[i];
+            INDORT[k]:=INDORT[rub]; INDORT[rub]:=INDORT[i];
+            rub:=if rub=k then i else rub-1;
+      end;
+      for j:=1 step 1 until m do A[j,il:=COLK[j]/norm;
+LAB14:if i$\ne$INDEX[i] then print $\GBPP$1?PARENT COL. NO.?,INDEX[i]
+      end i
+end ort;
+
+
+punch(4); sameline; digits(3); scaled(9); topofform;
+print $\GBPP$16?PROCEDURE O R T O N 3?;
+lmin:=1; lmax:=m1+nz; if nz=0 then magn:=1.0;
+for it:=1 step 1 until nmax do
+begin INDORT[i]:=0; NORMS[i]:=-1.0; INDEX[i]:=i end;
+i1:=jlast:=0; norm:=random(-1.0,1.0,21345759609);
+if magn>1.0 then begin tol1:=tol1/magn; tol2:=tol2/magn end;
+if nz$\ne$0 then
+begin change:=true; lmin:=m1+1;
+      print $\GBPP$14?T0L$\GBP$s3?=?,scaled(2),tol1,$\GBPP$1?TOLNIN=?,tol2;
+      ort(l,nz,true,true)
+end;
+tol1:=tol1*magn; tol2:= tpl2*magn;
+print $\GBPP$14?T0L$\GBP$s3?=?,scaled(2),tol1,$\GBPP$1?TOLMIN=?,tol2;
+for i:=nz+1 step i until n1 do NORMS[i]:=-1.0;
+ort(nz+1,n1,false, true); change:=false;
+ort(n4+1,n,false, false); prefix($\GBPP$1??); print $\GBPP$1??
+end block
+end ORTON3;
+\end{lstlisting}

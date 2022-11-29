@@ -1,0 +1,817 @@
+\newcommand{\Parametr}[1]{
+        \vspace{0.6ex}\underline{#1} }
+
+Algoritmus \orig{112} ORTON, popsaný v kap. 6, realizuje procedura
+ORTON3, sestavená v jazyce ALGOL pro počítač ELLIOTT 503.  Procedura
+ORTON3 transformuje vstupní matici $A$ na matici $W$ podle schematu
+%
+\begin{align*}
+  % https://tex.stackexchange.com/questions/639307/curly-braces-of-arbitrary-size
+  \newcommand{\biggglB}[1]{\left\{\!\parbox{0pt}{\rule{0pt}{#1}}\right.}
+  \tag{12.1}
+  \vcenter{\hbox{
+  \begin{tikzpicture}
+    \draw (0,2) rectangle (1,3); \draw(0.5,2.5) node{$A_{11}$};
+    \draw (1,2) rectangle (2,3); \draw(1.5,2.5) node{$A_{12}$};
+    \draw (2,2) rectangle (3,3); \draw(2.5,2.5) node{$A_{13}$};
+    \draw (0,1) rectangle (1,2); \draw(0.5,1.5) node{$A_{21}$};
+    \draw (1,1) rectangle (2,2); \draw(1.5,1.5) node{$A_{22}$};
+    \draw (2,1) rectangle (3,2); \draw(2.5,1.5) node{$A_{23}$};
+    \draw (0,0) rectangle (1,1); \draw(0.5,0.5) node{$A_{31}$};
+    \draw (1,0) rectangle (2,1); \draw(1.5,0.5) node{$A_{32}$};
+    \draw (2,0) rectangle (3,1); \draw(2.5,0.5) node{$A_{33}$};
+    %
+    \draw(-.5,1.5) node{$A\; = $};
+    \draw(3.4,2.5) node{\scriptsize $m_1$};
+    \draw(3.4,1.5) node{\scriptsize $m_2$};
+    \draw(3.4,0.5) node{\scriptsize $m_3$};
+    %
+    \draw(1,3.5)   node{$\overbrace{\hspace{1.8cm}}^{{n_1}}$};
+    \draw(2.5,3.5) node{$\overbrace{\hspace{0.8cm}}^{{n_2}}$};%{}^{n_2}$};
+    \draw(0.5,-0.4) node{${}^{m_2}$};
+  \end{tikzpicture} }} \quad \longrightarrow \quad
+  \mbox{ \scriptsize $m \;\; \biggglB{2.8cm} \;$}
+  %
+  \vcenter{\hbox{
+    \begin{tikzpicture}
+    \draw (0,2) rectangle (1,3); \draw(0.5,2.5) node{$W_{11}$};
+    \draw (1,2) rectangle (2,3); \draw(1.5,2.5) node{$W_{12}$};
+    \draw (2,2) rectangle (3,3); \draw(2.5,2.5) node{$W_{13}$};
+    \draw (0,1) rectangle (1,2); \draw(0.5,1.5) node{$W_{21}$};
+    \draw (1,1) rectangle (2,2); \draw(1.5,1.5) node{$W_{22}$};
+    \draw (2,1) rectangle (3,2); \draw(2.5,1.5) node{$W_{23}$};
+    \draw (0,0) rectangle (1,1); \draw(0.5,0.5) node{$W_{31}$};
+    \draw (1,0) rectangle (2,1); \draw(1.5,0.5) node{$W_{32}$};
+    \draw (2,0) rectangle (3,1); \draw(2.5,0.5) node{$W_{33}$};
+    %
+    \draw(1.5,3.4) node{$\overbrace{\hspace{2.8cm}}^{n}$};
+    \draw(0.5,-0.4) node{\scriptsize \textcolor{white}{${}^{m_2}$}};
+    \draw(3.6,1.5) node{$ = W\Punc{.}$};
+  \end{tikzpicture} }}
+\end{align*}
+%
+Předpokládá se, že
+%
+\begin{align*}
+  \tag{12.2}
+  \begin{aligned}
+    &m_1 > 0, \qquad n_1 > 0, \qquad m_2 \ge 0,
+    \qquad m_3 \ge 0, \qquad n_2 \ge 0,\\
+    &m = m_1 + m_2 + m_2, \qquad n = n_1 + n_2\Punc{.}
+  \end{aligned}
+\end{align*}
+
+\noindent
+Je-li $m > 0$, můžeme procedurou řešit úlohy typu IC resp. CU,
+formujeme-li vstupní matici $A$ např. podle (7.8) resp. (7.20),
+Rozměr $m_2$ potom představuje počet podmínek mezi neznámými resp.
+počet neměřených neznámých v podmínkových rovnicích. Je-li $m_2 = 0$,
+potom jak jsme viděli v kap. 6, přechází ORTON v zobecněnou
+ortogonalizaci matice
+%
+\begin{align*}
+  \tag{12.3}
+  \vcenter{\hbox{
+    \begin{tikzpicture}
+    \draw[thick] (0,1) rectangle (1,2); \draw(0.5,1.5) node{$A_{12}$};
+    \draw (1,1) rectangle (2,2); \draw(1.5,1.5) node{$A_{13}$};
+    \draw (0,0) rectangle (1,1); \draw(0.5,0.5) node{$A_{32}$};
+    \draw (1,0) rectangle (2,1); \draw(1.5,0.5) node{$A_{33}$};
+    \draw(2.4,1.5) node{\scriptsize $m_1$};
+    \draw(2.4,0.5) node{\scriptsize $m_3$};
+    %
+    \draw(0.5,2.3) node{${}^{n_1}$};
+    \draw(1.5,2.3) node{${}^{n_2}$};
+    \draw(-.5,1.02) node{$A = $};
+  \end{tikzpicture} }}
+\end{align*}
+
+\noindent
+Formujeme-li matici $A$ ve (12.3) podle (3.19) resp. (3.37),
+můžeme procedury užít k vyrovnání zprostředkujících resp.
+podmínkových pozorování. Postupy, uvedenými v kap. 11, můžeme
+procedurou ORTON3 rovněž hledat řešení soustav lineárních
+algebraických rovnic a to nejen s regulárními, ale i singulárními,
+případně obdélníkovými maticemi. Jedna z předností procedury
+spočívá v možnosti její aplikace k řešení špatně podmíněných nebo
+%
+singulárních \orig{113} úloh. Procedura je koncipována tak, že
+v případech, kdy řešení úlohy je numericky nejisté nebo není
+jednoznačné, automaticky definuje a řeší náhradní jednoznačnou
+úlohu v jistém smyslu blízkou výchozí úloze.
+
+Při vlastní ortogonalizaci užívá ORTON3 modifikované
+\name{GRAMOVY-SCHMIDTOVY} metody (MGS -- viz kap. 2) v uspořádání (2.11),
+přičemž její výsledky koriguje doortogonalizací, do jisté míry
+volitelnou. Při $m_2=0$ zpracovává ORTON3 sloupce matice $A$
+volitelně buď v sekvenčním nebo selektivním uspořádání (kap. 9).
+Při $m_2 \ne 0$ automaticky vychází ze selektivní varianty algoritmu;
+takový postup je nutný, má-li být zajištěna nezbytná regularita
+matice $A_{21}$ (kap. 6).
+
+Dříve než je kterýkoliv sloupec a matice $A$ podroben
+ortogonalizaci, normalizuje se dělením absolutně největším prvkem ze
+svých prvních $(m_1 + m_2)$ prvků
+%
+$ { \max_{1 \le i \le m_1+m_2} }| a_i | = \Vert a \Vert_\infty $
+%
+podle schematu
+%
+\begin{align*}
+  \tag{12.4}
+  a / \Vert a \Vert_\infty \rightarrow a \Punc{.}
+\end{align*}
+%
+Účelem této vstupní normalizace je odstranit nebezpečí z
+přetečení resp. podtečení při extrémně velkých nebo malých řádových
+velikostech prvků matice $A$ a získat, jak jsme viděli v kap. 9,
+měřítko pro posouzení numerické stability výpočtu. Pro přesnost
+je třeba dodat, že v některých výjimečných případech se
+bezprostředně nedělí normou
+%
+$ \Vert a \Vert_\infty\,,$
+%
+ale veličinou
+%
+$ \Vert a \Vert_\infty \cdot \mathrm{magn}$
+%
+nebo
+%
+$ \Vert a \Vert_\infty / \mathrm{magn}$,
+%
+kde $\mathrm{magn}$ je jeden z parametrů procedury.
+
+
+
+
+
+
+Popis procedury ORTON3 obsahuje příl. A. Příklad jejího
+praktického užití uvedeme v kap.~13. Pro vytvoření představy o
+rychlosti, s jakou je procedurou ORTON3 na počítači ELLIOTT 503
+zpracována matice $A$, uveďme empirickou formuli
+%
+$\mathrm{T}^{\min} \approx 2.10^{-5}m_1n_1^2$,
+%
+udávající dobu potřebnou pro ortogonalizaci základní submatice
+$A_{12}$ v (12.3) sekvenční variantou algoritmu. Formule platí za
+předpokladu, že nebyla aplikována doortogonalizace.
+
+
+\section{Parametry procedury}
+
+Procedura \orig{114}ORTON3 má 12 parametrů s vlastnostmi vyjádřenými
+hlavičkou procedury
+
+\begin{lstlisting}
+procedure ORTON3(A,ml,m2,m3,nl,n2,defect, tol,tolmin,  @:\Tag(12.5):@
+                 magn,change,INDEX);
+value ml,m2,n2,defect,tol,tolmin,magn,change;
+integer ml,m2,mj,nl,n2,defect; real tol,tolmin,magn;
+boolean change; array A; integer array INDEX;
+\end{lstlisting}
+
+\noindent
+Popíšeme význam jednotlivých parametrů.
+
+\Parametr{Parametr \TT{A}} je identifikátorem dvourozměrného pole, v němž
+musí být při vstupu do procedury uložena zpracovávaná matice
+$A$ (12.1). Předpokládá se, že dolní meze obou indexů jsou
+rovny jedné. Při výstupu z procedury bude v poli \TT{A} uložena matice
+$W$, získaná podle (12.1) aplikací algoritmu ORTON na matici $A$.
+Je-li $m_2 = 0$, zaujímá matice $W$ týž paměťový prostor s~mezemi
+$[1:m,1:n]$, jako matice $A$. Při $m_2 \ne 0$, mohou být paměťové nároky
+matice $W$ větší než nároky výchozí matice $A$. Stane se tak při
+řešení singulárních úloh (viz parametr \TT{tolmin}) tehdy, bude-li
+hodnost $h$ matice $[A_{21} A_{22} ]$ menší než $m_2$, (singularita
+druhéno druhu). Jak jsme viděli v kap. 8, rozšiřuje v takových
+případech procedura ORTON3 výchozí matici $A$ generováním $(m_2 - h)$
+nových sloupců a řádků, takže požadovaný prostor ohraničují
+meze indexů
+%
+\begin{align*}
+  \tag{12.6}  [ 1:m+m_2 - h, 1:n + m_2 - h]\Punc{.}
+\end{align*}
+%
+Je zřejmé, že meze (12.6) musí být respektovány při deklaraci
+skutečného parametru (pole), odpovídajícího formálnímu parametru
+\TT{A}. Neznáme-li hodnost $h$, může být užito \uv{volnější}
+de\-kla\-ra\-ce např.
+%
+\begin{lstlisting}
+   array XXX [1:m+defect, 1:n+defect],   @:\Tag(12.7):@
+\end{lstlisting}
+%
+kde hodnota proměnné \uv{\TT{defect}} není menší než rozdíl $(m_2-h)$.
+
+
+\Parametr{Parametry \TT{m1}, \TT{m2}, \TT{m3}, \TT{n1}, \TT{n2}}
+určují v souladu s (12.1) strukturu zpracovávané matice. Hodnoty
+\orig{115} proměnných \TT{m1}, \TT{m2} a \TT{n2} se voláním procedury ORTON3
+nemění. Hodnoty proměnných \TT{m3} a \TT{n1} se nemění pouze tehdy,
+pokud matice \TT{A} nebyla rozšířena generováním nových sloupců a
+řádků. Byla-li matice \TT{A} rozšířena o $(m_2-h)$ sloupců a řádků (viz
+popis parametru \TT{A}), pak o stejnou veličinu $(m_2-h)$ budou
+zvětšeny hodnoty proměnných \TT{m3} a \TT{nl}. Při výstupu z procedury
+ORTON3 je tedy hodnotami parametrů \TT{m1}, \TT{m2}, \TT{m3}, \TT{n1}
+a \TT{n2} ve všech případech vyjádřena struktura výsledné matice \TT{W}.
+
+\Parametr{Parametr \TT{defect}} se uplatňuje při řešení singulárních úloh
+druhého druhu, uvedených při popisu parametru \TT{A} $(m_2 \ne 0, h<m_2)$.
+Stejně jako ve (12.7) musí být v oněch případech při vyvolání
+procedury ORTON3 hodnota proměnné defect větší nebo rovná
+rozdílu mezí dimenzí $m_2$, a hodností $h$ matice $[A_{21} A_{22}]$ Je-li
+$m_2=0$ nebo současně $m_2 \ne 0$ a $h=m_2$, pak je vhodné, aby hodnota
+odpovídajícího skutečného parametru byla rovna nule.
+
+\Parametr{Parametry \TT{tol}, \TT{tolmin}, \TT{magn}} představují v
+podstatě kritéria, jimiž je řízeno použití doortogonalizace a podle
+nichž je posuzována singularita úlohy. Probereme nejprve jednočušší
+případ $m_2 = 0$.
+
+
+
+Je-li $m_2=0$, redukuje se algoritmus ORTON na zobecněnou
+ortogonalizaci (12.3). Přitom je pro přesnost řešení zřejmě
+rozhodující především jistota, s jakou se podaří ortogonalizovat
+sloupce základní submatice $A_{12} \rightarrow W_{12}$.  Označme $a$
+libovolný sloupec základní submatice, $\widetilde w$ sloupec vzniklý
+ortogonalizací a např.  podle (2.1,) a $w$ sloupec, který vznikl
+normalizací $\widetilde W$.  V~kap. 9 jsme viděli, že chyba vektoru
+$w$ může být měřena velikostí normy $d = \Vert \widetilde W \Vert$
+přibližně v tom smyslu, že logaritmus této normy aproximuje počet
+cifer, ztřacených při výpočtu $w$ (selektivní varianta
+algoritmu). Je-li např.  $\mathcal{O}(\Vert \widetilde W \Vert) =
+10^2$ 1ze očekávat ztrátu přibližně až dvou platných cifer při
+zpracování $a$. Aby bylo možno zabránit velkým ztrátám přesnosti, jsou
+sloupce, při jejichž ortogonalizaci ztráta přesnosti hrozí,
+zpracovávány procedurou ORTON3 individuálním způsobem. Postup
+zpracování závisí na hodnotách parametrů (tolerancí) \TT{tol} a
+\TT{tolmin}, jak ukazuje tab. 12.1. \orig{116}
+
+%
+% --------------------------------------------------------------------
+%
+\begin{table}[!htb]
+\centering\setlength{\extrarowheight}{2pt}
+\begin{tabular}{|p{0.25\linewidth}|p{0.695\linewidth}|}
+\hline
+ \multicolumn{1}{|c|}{Velikost $\Vert \widetilde w \Vert$} &
+ {Způsob zpracování sloupce v základní submatici}\\
+\hline
+\centering $\Vert \widetilde w \Vert \ge $ \TT{tol} &
+Ortogonalizace bez užití doortogonalizace \\
+\hline
+\centering\TT{tolmin} $\le \Vert \widetilde w \Vert < $ \TT{tol} &
+Ortogonalizace korigovaná doortogonalizací.
+Při zpracování sloupců selektivním způsobem
+proběhne doortogonalizace až tehdy, nebudou-li
+existovat sloupce základní submatice, které
+vedou k větší hodnotě normy $\Vert\widetilde w\Vert$.
+U sekvenční varianty algoritmu následuje
+doortogonalizacebezprostředně po ortogonalizaci.
+\\
+\hline
+\centering $\Vert\widetilde w \Vert < $ \TT{tolmin}&
+Singularita prvního druhu. Sloupec bude vyloučen
+jako lineárně závislý.
+\\
+\hline
+\end{tabular}\\[1.5em]
+{Tab. 12.1}
+\end{table}
+%
+% --------------------------------------------------------------------
+%
+
+\noindent
+Parametru \TT{magn} se při $m_2=0$ neužívá. Hodnota odpovídajícího
+skutečného parametru může být libovolná.
+
+
+Je-li $m_2 \ne 0$, proběhnou obecně všechny čtyři kroky algoritmu
+ORTON. Parametry \TT{tol}, \TT{tolmin} a \TT{magn} mají pak poněkud širší
+význam než tomu bylo ve zvláštním případě $m_2=0$. Užívají se totiž
+mj.~k~rozlišení singularit dvou různých typů (\TT{tolmin}) a
+zabezpečují vhodnou selekci sloupců při ortogonalizaci (\TT{tol}).
+Způsob řízení algoritmu tolerancemi \TT{tol} a \TT{tolmin} popisuje tab. 12.2.
+Pro jednoduchost je uvažováno pouze zpracování sloupců submatice
+
+\begin{align*}
+  \tag{12.8}
+  \vcenter{\hbox{
+    \begin{tikzpicture}
+    \draw (0,1) rectangle (1,2); \draw(0.5,1.5) node{$A_{11}$};
+    \draw (1,1) rectangle (2,2); \draw(1.5,1.5) node{$A_{12}$};
+    \draw (0,0) rectangle (1,1); \draw(0.5,0.5) node{$A_{21}$};
+    \draw (1,0) rectangle (2,1); \draw(1.5,0.5) node{$A_{22}$};
+  \end{tikzpicture} }} \Punc{.}
+\end{align*}
+%
+\orig{117}
+%
+% --------------------------------------------------------------------
+%
+\begin{table}[!htb]
+{\centering\setlength{\extrarowheight}{2pt}
+\begin{tabular}{|c|p{0.325\linewidth}|p{0.325\linewidth}|}
+\hline
+ \multirow{2}{*}{Velikost $\Vert \widetilde w \Vert^{\star}$}
+ &
+ \multicolumn{2}{p{0.7\linewidth}|}
+ {Způsob zpracování sloupců submatice (12.8)}
+ \\
+ \cline{2-3}
+ &
+ \multicolumn{1}{p{0.325\linewidth}|}
+ { Výběr a zpracování prvních $m_2$, sloupců
+   zajišťujících regularitu $A_{21}$
+ }
+ & \multicolumn{1}{p{0.325\linewidth}|}
+ {Zpracování zbývajících sloup\-ců
+ } \\
+\hline %----------------------------------------------------
+\centering $\Vert \widetilde w \Vert \ge $ \TT{tol} &
+Ortogonalizace bez doortogonalizace
+&
+Ortogonalizace korigovaná do\-ortogonalizací
+\\
+\hline  %----------------------------------------------------
+\centering\TT{tolmin} $\le \Vert \widetilde w \Vert < $ \TT{tol} &
+\multicolumn{2}{p{0.6\linewidth}|}
+            {Ortogonalizace korigovaná
+              doortogonalizací.}
+\\
+\hline
+\centering $\Vert\widetilde w \Vert < $ \TT{tolmin}
+&
+%
+Singularita druhého druhu. Bude generován druhu nový sloupec a řádek
+matice $A$.
+%
+&
+%
+Singularita prvního druhu. Sloupec bude vyloučen jako lineárně
+závislý.
+%
+\\
+\hline
+\end{tabular}\\[0.9em]
+}
+
+${}^\star$ {\small
+   Při výpočtu prvních $m_2$ sloupců matice $W$ je
+   norma $\Vert \widetilde w \Vert$
+   počítána z prvků odpovídajících spodní submatici ve (12.8).
+   ~Při výpočtu ostatních sloupců naopak z prvků odpovídajících
+   horní submatici (viz definici algoritmu ORTON).}
+\begin{center}\vspace{-1.0em}
+         Tab 12.2
+\end{center}
+\end{table}
+%
+% --------------------------------------------------------------------
+%
+
+\noindent
+Doortogonalizace při $\Vert\widetilde w\Vert < \TT{tol}$ stejně
+jako generování slourců a řádků, příp. vylučování sloupců proběhnou až
+tehdy, nebude-li existovat sloupec vedoucí k větší hodnotě
+normy $\Vert\widetilde w\Vert$.
+
+Užití norem $\Vert\widetilde w\Vert$ jako měřítek přesnosti
+ortogonalizovaných vektorů, stejně jako stanovení tolerancí \TT{tol}
+a \TT{tolmin}, vychází z předpokladu, že délka výchozího vektoru $a$
+předběžně normalizovaného podle (12.4) je přibližně jednotková
+(kap.9). Tento předpoklad je splněn při $m_2=0$. Je-li $m_2\ne0$
+a prvky v horní části submatice (12.8) budou řádově jiné než prvky
+v její dolní
+části, pak splněn být nemusí\footnote
+{
+Vektor $a$, kterému odpovídá norma $\Vert\widetilde w\Vert$,
+je totiž tvořen prvky, ležícími buď jen v horní nebo jen spodní
+submatici ve (12.8), zatímco normalizační faktor ve (12.4)
+se vybírá ze všech prvků příslušného sloupce ve (12.8).
+}.
+%
+Je proto v proceduře ORTON3 zaveden
+%
+\orig{118} parametr
+\TT{magn}, řádově udávající poměr velikosti prvků v horní
+a dolní části submatice (12.8). Je-li např. $10^m$ resp. $10^n$ řád
+prvků v horní resp. dolní části (12.8), pak hodnota skutečného
+parametru, odpovídajícího parametru \TT{magn} bude $10^{m-n}$.  Při
+stanovení \TT{magn} se uvažují pouze sloupce, mající v horní i dolní
+části nenulové prvky. Sloupce, mající nenulové prvky jen v horní nebo
+jen v dolní části se v úvahu neberou. Procedura ORTON3 respektuje
+hodnotu parametru \TT{magn} tím, že při $\TT{magn}\ne1$ interně
+modifikuje zadané hodnoty tolerancí \TT{tol}
+a \TT{tolmin}. Modifikované tolerance procedura tiskne. Zavedením
+parametru \TT{magn} se způsob stanovení výchozích hodnot
+tolerancí \TT{tol} a \TT{tolmin} nemění.  Stejně jako předtím jsou
+tolerancemi definovány jisté kritické ztráty platných cifer, sloužící
+k řízení výpočtu podle tab. 12.1 a 12.2.
+
+
+Jak při $m_2=0$, tak při $m_2\ne0$ se předpokládá, že
+%
+\begin{align*}
+   \tag{12.9}  0 < \TT{tolmin} \le \TT{tol}\Punc{.}
+\end{align*}
+%
+Numerické hodnoty obou tolerancí závisí na charakteru řešené
+úlohy. Pro hrubou orientaci uveďme, že při užití procedury k řešení
+menších vyrovnávacích úloh se osvědčily např. hodnoty
+$\TT{tol}=10^{-1}$ a $\TT{tolmin}=10^{-6}$ (bez ohledu na
+velikost \TT{magn}).
+
+
+
+\Parametr{Parametr \TT{change}}
+umožňuje volbu mezi sekvenčním a selektivním
+způsobem zpracování sloupců matice $A$. Je-li hodnota skutečného
+parametru $\mathbf{true}$, pak ORTON3 užije selektivní varianty
+algoritmu.  Je-li
+jeho hodnota $\mathbf{false}$, pak užije varianty sekvenční,
+ovšem pouze tehdy,
+bude-li současně $m_2=0$. V případech, že je současně
+$\TT{change} \equiv \mathbf{false}$ a
+$m_2\ne0$, bude hodnota parametru \TT{change} interně změněna na
+$\mathbf{true}$ a bude
+užito selektivní varianty algoritmu.
+
+
+\Parametr{Parametr \TT{INDEX}} je identifikátorem jednorozměrného
+celočíselného pole s mezemi $[\;1:n+(m_2-h)\;]$, kde $(m_2-h)$ je počet
+sloupců generovaných procedurou ORTON3 v případě singularity druhého
+druhu. Stejně jako u parametru \TT{A} může být i zde při neznalosti
+hodnosti $h$ užito deklarace skutečného parametru ve tvaru
+%
+\begin{lstlisting}
+   integer array XXX [1:m+defect, 1:n+defect],   @:\Tag(12.10):@
+\end{lstlisting}
+%
+kde \orig{119} hodnota proměnné \uv{\TT{defect}} není menší než
+$(m_2-h)$.  Při výstupu z procedury ORTON3 udává \TT{INDEX}
+posloupnost, v jaké byly zpracovány sloupce matice
+$A$. Proměnná \TT{INDEX[i]} obsahuje totiž index sloupce matice $A$,
+jehož ortogonalizací vznikl i-tý sloupec výsledné matice $W$
+$(i=1,2,\ldots,n)$. Sloupcům, které byly generovány procedurou, je
+přiřazen záporný index. Např. první generovaný sloupec má index rovný
+$-(n_1+1)$.
+
+
+
+\section{Význam tisků}
+
+Při vyvolání procedury ORTON3 dochází k tisku
+diagnostických informací, podrobně popisujících průběh transformace
+%
+$A \rightarrow W$.
+%
+Pomocí nich je možno analyzovat singulární úlohy, posuzovat
+přesnost řešení, sledovat výběr sloupců při užití selektivní
+varianty algoritmu apod. Tištěné informace jsou provázeny
+objasňujícími texty. V následujícím přehledu vysvětlíme význam
+jednotlivých tištěných hodnot, přičemž budeme znakem \TT{X}
+symbolizovat tisk celých čísel a znakem \TT{X$_{10}$X} tisk čísel v
+semilogaritmickém tvaru. Pro větší přesnost popisu budeme rozlišovat
+indexy sloupců matice $A$ a indexy sloupců pole \TT{A}. Takové
+rozlišení je nutné u selektivní varianty algoritmu, kde může v poli
+\TT{A} dojít k explicitním přesunům sloupců výchozí matice $A$.
+
+
+\newenvironment{Minipage}{%
+\noindent\begin{minipage}{\linewidth}
+\vspace{2.2ex}
+}{\end{minipage}}
+
+{\begin{Minipage}
+\TT{TOL~~~ = X$_{10}$X}\\
+\TT{TOLMIN = X$_{10}$X}\\
+\end{Minipage}
+%
+\noindent
+Tisk tolerancí \TT{tol} a \TT{tolmin} (viz parametry \TT{tol},
+\TT{tolmin}, \TT{magn}),
+s nimiž procedura pracuje. Tyto hodnoty jsou při $m_2=0$ rovny
+hodnotám odpovídajících skutečných parametrů. Je-li $m_2\ne0$, tisknou
+se v závislosti na hodnotě \TT{magn} tolerance interně
+modifikované. Úprava tolerancí je obecně jiná při určování prvních
+$m_2$ sloupců $w_i$ matice $W$ než při určování zbývajících sloupců.
+Vlastní modifikace tolerance \TT{tol} probíhá podle tab. 12.3.
+\orig{120}
+
+\begin{table}[!htb]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\diagbox{\TT{magn}}{\TT{i~~~}} & $\le m_2$ & $> m_2$ \\
+\hline%\hline
+  $ \le 1$ & \TT{tol} & \TT{tol} $\times$ \TT{magn} \\
+\hline
+  $ >1 $   & \TT{tol/magn} & \TT{tol} \\
+\hline
+\end{tabular}\\[1.5ex]
+Tab. 12.3
+\end{table}
+
+\noindent
+Tolerance tolmin je modifikována analogicky. Z tab. 12.3 je
+zřejmé, že při $\TT{magn}=1$ se vstupní hodnoty tolerancí nemění.
+
+
+\begin{Minipage}
+\TT{COLUMN NO.: X}\\
+\end{Minipage}
+
+\noindent Záhlaví odstavce výstupního textu, popisujícího postup při
+vytváření X-tého sloupce matice~$W$.
+
+\begin{Minipage}
+\TT{TRY COL. NO. X}\\
+\end{Minipage}
+
+\noindent Tiskne se index toho sloupce pole \TT{A},
+který bude podroben ortogonalizaci. Při užití sekvenční varianty je to
+současně index sloupce matice $A$. U selektivní varianty může navíc
+dojít k tisku informace
+
+\begin{Minipage}
+\TT{SMALL NORM}\\
+\end{Minipage}
+
+\noindent
+označující, že již v některé předcházející etapě výpočtu byl učiněn
+neúspěšný pokus o ortogonalizaci X-tého sloupce. Tím míníme, že dříve
+započaté zpracování dotyčného sloupce nemohlo být dokončeno pro příliš
+malou hodnotu normy $\Vert\widetilde w\Vert$ (viz popis
+parametrů \TT{tol} a \TT{tolmin}). Takového zjištění užívá procedura
+při řízení dalšího postupu.
+
+\begin{Minipage}
+\TT{ABSMAX [X,X] = X$_{10}$X}\\
+\end{Minipage}
+
+\noindent
+Tisk absolutní hodnoty absolutně největšího prvku z prvních
+$(m_1 + m_2)$ prvků ortogonalizovaného sloupce. V hranatých
+závorkách se tisknou indexy tohoto prvku, charakterizující jeho
+umístění v poli \TT{A}. První index je řádkový, druhý sloupcový.
+Navíc dojde k tisku informace \orig{121}
+
+\begin{Minipage}
+\TT{ZERO COLUMN}\\
+\end{Minipage}
+
+\noindent
+v těch případech, kdy \TT{ABSMAX [X,X] = O}.
+
+
+\begin{Minipage}
+\TT{NORM [X] = X$_{10}$X}\\
+\end{Minipage}
+%
+Tiskne se hodnota normy $\Vert\widetilde w\Vert$, k níž vedla
+ortogonalizace a případně doortogonalizace sloupce, uvedeného textem
+\uv{\TT{TRY~COL.~NO.}} (viz popis parametrů \TT{tol} a \TT{tolmin})
+nebo textem \uv{\TT{GENERATED COL. NO.}}.
+
+
+\begin{Minipage}
+\TT{< T0L}\\
+\TT{< TOLMIN}\\
+\end{Minipage}
+%
+Informace o tom, že norma $\Vert\widetilde w\Vert$ vektoru,
+který lze identifikovat z kontextu, je menší než tolerance
+\TT{tol} resp. \TT{tolmin}.
+
+
+\begin{Minipage}
+\TT{REPEATED ORTHOG.}\\
+\end{Minipage}
+%
+Bude aplikována doortogonalizace.
+
+
+\begin{Minipage}
+\TT{LIN. DEP. COL. NO. X}\\
+\end{Minipage}
+%
+Dojde-li k tomuto tisku při zpracování prvních n sloupců
+matice $A$, je jím signalizována singularita prvního druhu (kap.8),
+Stane-li se tak při zpracování posledních $n_2$ sloupců matice $A$,
+pak byl v matici
+%
+$\left[ \begin{array}{c}A_{13}\\A_{23}\end{array} \right]$
+%
+nalezen sloupec, který je lineární kombinací sloupců matice
+%
+$ \left[
+\begin{array}{cc}
+A_{11} & A_{12} \\ A_{21} & A_{22}
+\end{array}
+\right]{.} $
+%
+~\TT{X} udává index \uv{singulárního}
+sloupce výchozí matice $A$ a to i tehdy, když u selektivní varianty
+došlo k záměnám sloupců. Pokud byla singuliarita zjištěna u některého
+z prvních $n_1$ sloupců matice $A$, bude následovat tisk posledních
+$m_3$ prvků odpovídajícího vektoru $\Vert\widetilde w\Vert$ Jak jsme
+viděli v kap. 8, lze těchto hodnot užít např. při posuzování
+řešitelnosti podmínkových rovnic, při hledání koeficientů pro
+vyjádření jedné podmínkové rovnice jako lineární kombinace jiných
+apod.
+
+\orig{122}
+\begin{Minipage}
+\TT{PARENT COL. NO. X}\\
+\end{Minipage}
+%
+Index sloupce výchozí metice $A$, jehož ortogonalizací vznikl
+sloupec matice $W$ uvedený textem \uv{\TT{COLUMN NO.}}. Indexy sloupců,
+generovaných uvnitř procedury, jsou záporné.
+
+
+\begin{Minipage}
+\TT{REPLACE COL. NO. X}\\
+\end{Minipage}
+%
+Index sloupce výchozí matice $A$, jehož ortogonalizací vznikl sloupec
+matice $W$ uvedený textem \uv{TT{COLUMN NO.}}. Indexy sloupců,
+generovaných uvnitř procedury, jsou záporné.
+
+\begin{Minipage}
+\TT{REPLACE X $\to$ X $\to$ X $\to$ X}\\
+\end{Minipage}
+%
+Informace o záměnách sloupců v poli \TT{A} u selektivní varianty
+algoritmu. Mechanismus užívaný při záměnách vyložíme pro ilustraci na
+konkrétním příkladě. Předpokládejme, že. např. první dva sloupce $a_1,
+a_2$ matice $A$ byly transformovány na první dva sloupce $w_, w_2$
+matice $W$. Při hledání třetího sloupce matice $W$ nechť se ukázalo,
+že sloupce $a_3$ a $a_4$, vedou k normám $\Vert\widetilde w_3\Vert$ a
+$\Vert\widetilde w_4\Vert$ menším, než tolerance \TT{tol}, sloupec
+$a_5$ k normě $\Vert\widetilde w_3\Vert$ větší než
+\TT{tol}. Je-li v dané úloze např. $n_1=10$, dojde potom k přesunům
+podle schematu {\TT{REPLACE 3 $\to$ 10 $\to$ 5 $\to$ 3}.
+Z příkladu je patrná
+zásada, podle níž jsou kosoúhlé sloupce přesunovány co nejdále
+vpravo od sloupce matice $W$, který je právě určován. Je-li
+takových sloupců více, vytváří se při pravém okraji odpovídající
+části pole \TT{A} skupina \uv{málo kvalitních} sloupců, které označujeme
+jako
+
+
+\begin{Minipage}
+\TT{RUBBISH .}\\
+\end{Minipage}
+%
+Dojde-li k tisku tohoto slova, pak již nelze najít žádný sloupec,
+který by vedl k normě $\Vert\widetilde w\Vert \ge tol$. V takovém
+případě může být tištěna informace
+
+\begin{Minipage}
+\TT{UPDATE COL. NO. X}\\
+\end{Minipage}
+%
+spojená s ortogonalizací X-tého sloupce pole \TT{A} k těm sloupcům
+matice $W$, k nimž dosud nebyl ortogonalizován. Takovým způsobem se
+upravují všechny \uv{málo kvalitní} sloupce ze skupiny \TT{RUBBISH.}
+
+
+\begin{Minipage}
+\TT{BEST COL. NO. X WITH NORM X$_{10}$X}\\
+\end{Minipage}
+%
+Index \TT{X} sloupce (v poli \TT{A}) ze skupiny \TT{RUBBISH}, který
+vede k maximální hodnotě \TT{X$_{10}$X} normy $\Vert\widetilde
+w\Vert$.\orig{123}
+
+
+\begin{Minipage}
+\TT{REPLACE X $\to$ X}\\
+\end{Minipage}
+%
+Informace o přesunu sloupců při zjištění singularity druhého
+druhu. Cílem přesunu je uvolnit potřebný prostor v poli \TT{A},
+dříve než bude generován nový sloupec. Např. před generováním
+prvního sloupce bude tištěno schema
+\uv{\TT{REPLACE (n${}_1$+1) $\to$ (n+1)}}.
+
+
+\begin{Minipage}
+\TT{GENERATED COL. NO. X}\\
+\end{Minipage}
+%
+Index \TT{X} sloupce v poli \TT{A}, který byl procedurou generován při
+zjištění singularity druhého druhu. Následuje tisk prvků
+generovaného sloupce s indexy
+%
+$m_1+1,m_1+2,\ldots,m_1+m_2$/
+%
+Hodnoty tištěných
+prvků získává ORTON3 voláním lokálně deklarovaného generátoru
+náhodných čísel \uv{\TT{random}} [45], [46], [55]. Parametry procedury
+\TT{random} jsou přitom voleny tak, aby byla vytvářena náhodná čísla,
+rovnoměrně rozdělená v intervalu <-1,1>.
+
+
+\begin{Minipage}
+\TT{GENERATED COL. IS LIN. DEP.}\\
+\end{Minipage}
+%
+Tato informace se tiskne tehdy, vede-li generovaný sloupec k
+hodnotě normy $\Vert\widetilde w\Vert< \TT{tol}$.
+
+Pro ilustraci uvedeme na závěr ukázku tisku diagnostických
+informací, získaných při řešení konkrétní úlohy s maticí
+%
+\begin{align*}
+\tag{12.11}
+A =
+\begin{array}{|rr|r|r|}
+\hline
+ ~~1 &  ~~2 &  ~~1 &  ~~0 \\
+ 2 &  3 &  2 &  1 \\
+ 3 &  4 &  3 &  0 \\
+ 4 &  5 &  4 &  0 \\
+ 5 &  6 &  3 &  0 \\
+ 6 &  7 &  2 &  0 \\
+ 7 &  8 &  1 &  0 \\
+ \hline
+ 1 &  2 &  1 &  1 \\
+ 3 &  6 &  3 &  0 \\
+ \hline
+ 4 & -7 &  9 &  8 \\
+ \hline
+\end{array}\Punc{.}
+\end{align*}
+
+\noindent
+Submatice $[A_{21} A_{22}]$ má v našem příkladě hodřost jedna, bude
+tedy při vyvolání procedury ORTON3 generován v matici $A$ nový sloupec
+(a řádek). Volíme-li hodnoty tolerancí $\TT{tol} = 10^{-1}$ a
+$\TT{tolmin} = 10^{-6}$, pak při $\TT{magn}=1$ dostaneme tisk ve tvaru
+\orig{124}
+
+\newcommand{\X}[2]{#1${}_{\texttt{10}}$#2\!\!}% jina verze v reseni_soustav.tex
+\newpage
+%\enlargethispage{4\baselineskip}
+{\small%
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8}]
+TOL   = \X{1.0}{-01}
+TOLMIN= \X{1.0}{-06}
+
+COLUMN NO.:   1
+TRY COL. NO.   1
+ABSMAX[   7,   1]=\X{6.99999998}{+00}
+NORM[   1]= \X{4.51753951}{-01}
+
+COLUMN NO.:   2
+TRY COL. NO.   2
+ABSMAX[   7,   2]= \X{6.99999999}{+00}
+NORM[   2]= \X{2.08250059}{-09} <TOL
+TRY COL. NO.   3
+ABSMAX[   4,   3]= \X{3.99999999}{+00}
+NORM[   3]= \X{2.08250059}{-09} <TOL
+RUBBISH
+BEST COL. NO.   2 WITH NORM \X{2.08250059}{-09} <TOLMIN
+REPLACE   4  -->   5
+GENERATED COL. NO.   4
+   8   \X{6.65240091}{-02}
+   9   \X{3.32670026}{-01}
+NORM[   4]= \X{4.20797978}{-02}  <TOL
+GENERATED COL. ID LIN. DEP.
+   8  \X{-3.36649847}{-01}
+   9   \X{3.12750760}{-01}
+NORM[   4]= \X{4.19539473}{-01}
+REPLACE   2  -->   4   -->   4   -->   2
+PARENT COL. NO.  -4
+
+TOL   = \X{1.0}{-01}
+TOLMIN= \X{1.0}{-06}
+
+COLUMN NO.:   3
+TRY COL. NO.   3
+NORM[   3]= \X{1.87082869}{+00}
+REPEATED ORTHOG.
+NORM[   3]= \X{1.87082869}{+00}
+
+COLUMN NO.:   4                   COLUMN NO.:   5
+TRY COL. NO.   4                  TRY COL. NO.   5
+NORM[   4]= \X{5.28221412}{-01}        ABSMAX[   2,   5]= \X{1.00000000}{+00}
+REPEATED ORTHOG.                  NORM[   5]=\X{8.62736276}{-01}
+NORM[   4]= \X{5.28221412}{-01}        REPEATED ORTHOG.
+PARENT COL. NO.   2               NORM[   5]= \X{6.62736276}{-01}
+                                  PARENT COL. NO.   4
+\end{Verbatim}
+}
+
+\noindent
+Tištěné údaje nevyžadují zvláštního komentáře. Připomeneme jen,
+že v odstavcích \TT{COLUMN NO.: 1} a \TT{COLUMN NO.: 2} se všechny normy
+počítají z prvků odpovídajících 8. a 9. řádku v poli \TT{A}. Ve
+zbývajících odstavcích odpovídají normy prvkům v prvních sedmi řádcích
+pole \TT{A}.

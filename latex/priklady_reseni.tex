@@ -1,0 +1,386 @@
+{ \newcommand{\TS}[1]{\textsuperscript{#1}}
+
+Uvedeme \orig{90} numerické příklady ortogonalizace dvou mátic,
+odpovídajících špatně podmíněným vyrovnávacím úlohám. Hlavní
+pozornost přitom věnujeme odhadům chyb vektorů $w_i$ podle vzorců z
+kap. 9 a jejich porovnání se skutečně dosaženými chybami.
+
+
+\Subsubsection{A} V prvním příkladě budeme pracovat s maticí $A(11 \times 3)$,
+jejíž sloupce získáme v souladu s~(9.12) podle předpisu
+%
+\begin{align*}
+  \tag{10.1}
+  a_1 = b_1, \quad a_2 = b_1 + db_2, \quad a_3 = b_2 + db_3,
+\end{align*}
+%
+kde $b_1$, $b_2$ a $b_3$ tvoří ortonormální soustavu a d=0,01.%
+\footnote{
+Lze dokázat, že pro takto definivanou matici $A$ platí
+$\cond (A^TA) \approx 4.10^8$. Pokud by tedy matice $A$ byla např.
+maticí soustavy rovnic oprav, bude odpovídající vyrovnávací
+úloha velmi špatně podmíněná.
+}
+%
+Abychom mohli posoudit skutečnou chybu vektorů $w_i$ získaných při
+numerickém výpočtu, najdeme vektory $w_i$ nejprve obecně. Přitom budeme
+uvažovat obě varianty ortogonalizačního algoritmu.
+
+Sekvenční varianta:~~ Podle (9.13) vede ortogonalizace vektorů
+(10.1) k vektorům $w_i = b_i$ $(i=1,2,3)$.
+
+
+Selektivní varianta:~~ Z úvah o vzájemné poloze vektorů $a_i$
+(tab. 9.1) bezprostředně vyplývá, že při užití selektivní varianty
+budou tyto vektory ortogonalizovány v pořadí $a_1,a_3,a_2$. Přitom
+dostaneme ovšem vektory $w_i$ obecně jiné než u sekvenční varianty.
+
+
+Označíme-li $\widetilde w_i$  $(i=1,2,3)$ nenormalizované vektory získané
+ortogonalizací vektorů $a_j$ v~pořadí $a_1,a_3,a_2$ a abstrahujeme-li od
+úvodního dělení vektoru $a_i$ jeho některou normou, bude
+%
+\begin{align*}
+  \tag{10.2}
+  \widetilde w_1 &= a_1 = b_1,    &w_1 &= b_1\\
+  \tag{10.3}
+  \widetilde w_2 &= a_3 - (a_3,w_1)w_1 = a_3,
+  &w_2 &= \widetilde w_2 / \Vert \widetilde w_2 \Vert =
+  (1+d^2)^{-{1\over2}}a_3 \approx (1-0.5d^2)a_3\\
+  \intertext{a analogicky}
+  \tag{10.4}
+  \widetilde w_3 &= -d^2b_3 + d^3a_3,
+  &w_3 &\approx (1+0,5d^2)(-b_3+da_3).
+  \\
+\end{align*}
+
+
+Ukážeme \orig{91} ještě, jakým způsobem lze najít soustavu výchozích
+ortonormálnícn vektorů $b_i$. Prvky každého vektoru $b_i$ můžeme např.
+považovat za funkční hodnoty polynomů ortonormálních na určité množině
+bodů. Tyto hodnoty jsou pro ekvidistantně rozložené body tabelovány
+např. v [54]. V naší úloze pracujeme s vektory o jedenácti složkách,
+stačí tedy ze zmíněných tabulek převzít hodnoty z libovolných sloupců
+oddílu tabulek, příslušného jedenácti bodům. V tab. 10.1 uvádíme
+hodnoty, převzaté z [54, str.~2, n=10].
+
+
+\begin{table}[!htb]
+% \caption{} ... no global caption
+\begin{subtable}{0.5\linewidth}
+  \centering
+  \begin{tabular}{|c|c|c|}
+    \hline
+    $b_1$ & $b_2$ & $b_3$ \\
+    \hline
+    -0,476~7313 & -0,458~0286 & ~0,354~7874 \\ %table-data-10.1
+    -0,381~3850 & ~0,091~6057 & -0,354~7874 \\ %table-data-10.1
+    -0,286~0388 & ~0,335~8876 & -0,354~7874 \\ %table-data-10.1
+    -0,190~6925 & ~0,351~1553 & -0,059~1312 \\ %table-data-10.1
+    -0,095~3463 & ~0,213~7467 & ~0,236~5249 \\ %table-data-10.1
+    ~0,000~0000 & ~0,000~0000 & ~0,354~7874 \\ %table-data-10.1
+    ~0,095~3463 & -0,213~7467 & ~0,236~5249 \\ %table-data-10.1
+    ~0,190~6925 & -0,351~1553 & -0,059~1312 \\ %table-data-10.1
+    ~0,286~0388 & -0,335~8876 & -0,354~7874 \\ %table-data-10.1
+    ~0,381~3850 & -0,091~6057 & -0,354~7874 \\ %table-data-10.1
+    ~0,476~7313 & ~0,458~0286 & ~0,354~7874 \\ %table-data-10.1
+     \hline
+  \end{tabular}\\[1.5ex]
+  Tab. 10.1
+\end{subtable}%
+\begin{subtable}{0.5\linewidth}
+  \centering
+  \begin{tabular}{|c|c|c|}
+    \hline
+    $a_1$ & $a_2$ & $a_3$ \\
+    \hline
+    -0,476~731  & -0,481~312  & -0,454~481  \\ %table-data-10.2
+    -0,381~385  & -0,380~469  & ~0,088~058  \\ %table-data-10.2
+    -0,286~039  & -0,282~680  & ~0,332~340  \\ %table-data-10.2
+    -0,190~693  & -0,187~181  & ~0,350~564  \\ %table-data-10.2
+    -0,095~346  & -0,093~209  & ~0,216~112  \\ %table-data-10.2
+    ~0,000~000  & ~0,000~000  & ~0,003~548  \\ %table-data-10.2
+    ~0,095~346  & ~0,093~209  & -0,211~382  \\ %table-data-10.2
+    ~0,190~693  & ~0,187~181  & -0,351~747  \\ %table-data-10.2
+    ~0,286~039  & ~0,282~680  & -0,339~436  \\ %table-data-10.2
+    ~0,381~385  & ~0,380~469  & -0,095~154  \\ %table-data-10.2
+    ~0,476~731  & ~0,481~312  & ~0,461~577  \\ %table-data-10.2
+     \hline
+  \end{tabular}\\[1.5ex]
+  Tab. 10.2
+\end{subtable}
+\end{table}
+
+%\noindent
+Vektory $a_i$, vypočtené pomocí takto definovaných vektorů $b_i$
+podle vzorci (10.1) a zaokrouhlené na šest desetinných míst, jsou
+uspořádány v tab. 10.2.
+%
+
+\noindent
+Euklidovská  \orig{92} norma skutečné chyby vektoru $a_1$ je potom rovna
+$1.10^{-6}$, normy chyb zbývajících vektorů $a_i$ jsou zřejmě řádově
+stejné. Budeme proto v dalším klást
+%
+\begin{align*}
+\tag{10.5}
+| \delta_a | = 10^{-6}.
+\end{align*}
+%
+Chybami zatížená matice $A$, jejíž prvky jsou sestaveny v tab.
+10.2, byla ortogonalizována pomocí procedury ORTON3 (kap. 12)
+na počítači ELLIOTT 503 a to jak sekvenční tak selektivní
+variantou ortogonalizačního algoritmu. Výsledky ortogonalizace
+zachycují tabulky 10.3 a 10.4.
+
+\begin{table}[!htb]
+%\caption{}
+\begin{subtable}{0.5\linewidth}
+  \centering
+  \begin{tabular}{|c|c|c|}
+    \hline
+    $w_1$ & $w_2$ & $w_3$ \\
+    \hline
+    -0,476~7310  &  -0,458~035  &  ~0,3553  \\
+    -0,381~3850  &  ~0,091~614  &  -0,3556  \\
+    -0,286~0390  &  ~0,335~888  &  -0,3548  \\
+    -0,190~6930  &  ~0,351~181  &  -0,0618  \\
+    -0,095~3460  &  ~0,213~687  &  ~0,2424  \\
+    ~0,000~0000  &  ~0,000~000  &  ~0,3548  \\
+    ~0,095~3460  &  -0,213~687  &  ~0,2306  \\
+    ~0,190~6930  &  -0,351~181  &  -0,0565  \\
+    ~0,286~0390  &  -0,335~888  &  -0,3547  \\
+    ~0,381~3850  &  -0,091~614  &  -0,3539  \\
+    ~0,476~7310  &  -0,458~035  &  ~0,3542  \\
+     \hline
+  \end{tabular}\\[1.5ex]
+  Tab. 10.3 ~~Sekvenční varianta
+\end{subtable}%
+\begin{subtable}{0.5\linewidth}
+  \centering
+  \begin{tabular}{|c|c|c|}
+    \hline
+    $w_1$ & $w_2$ & $w_3$ \\
+    \hline
+    -0,476~7310  &  -0,454~4582  &  -0,35989  \\
+    -0,381~3850  &  ~0,088~0532  &  ~0,35651  \\
+    -0,286~0390  &  ~0,332~3228  &  ~0,35816  \\
+    -0,190~6930  &  ~0,350~5460  &  ~0,06528  \\
+    -0,095~3460  &  ~0,216~1009  &  -0,24027  \\
+    ~0,000~0000  &  ~0,003~5478  &  -0,35476  \\
+    ~0,095~3460  &  -0,211~3712  &  -0,23268  \\
+    ~0,190~6930  &  -0,351~7289  &  ~0,05301  \\
+    ~0,286~0390  &  -0,339~4185  &  ~0,35136  \\
+    ~0,381~3850  &  -0,095~1488  &  ~0,35301  \\
+    ~0,476~7310  &  ~0,461~5539  &  -0,34962  \\
+     \hline
+  \end{tabular}\\[1.5ex]
+  Tab. 10.4 ~~Selektivní varianta
+\end{subtable}
+%
+\end{table}
+
+
+
+
+
+
+\noindent
+V tabulkách \orig{93} 10.5 a 10.6 jsou uvedeny hodnoty euklidovských
+norem odpovídajících skutečných chyb a porovnány s odhady vypočtenými
+podle vzorců (9.11) a (9.31). Pro větší názornost je přehled
+%
+doplněn \orig{94} numerickými hodnotami délek $d_i$, z nichž byly
+zmíněné odhady počítány. Délky $d_i$, jsou tištěny procedurou ORTON3
+pod označením {NORM [i]} (kap. 12).
+
+
+
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    $i$ & $d_i$ &
+    \begin{tabular}{c}
+    Norma skutečné\\chyby $\Vert \delta_{wi} \Vert$ \end{tabular} &
+    \begin{tabular}{c}
+    Odhad $\Vert \delta_{wi}\Vert$ podle\\(9.11)\end{tabular} \\
+    \hline
+    1  &  2,1~.~10\TS{0~}  &  1,0~.~10\TS{-6}  &  1,0~.~10\TS{-6} \\
+    2  &  2,1~.~10\TS{-2}  &  0,9~.~10\TS{-4}  &  0,5~.~10\TS{-4} \\
+    3  &  2,2~.~10\TS{-2}  &  0.8~.~10\TS{-2}  &  0,2~.~10\TS{-2} \\
+         \hline
+  \end{tabular}\\[1.5ex]
+  Tab. 10.5 ~~Normy chyb při užití sekvenční varianty
+\end{table}
+
+
+
+\begin{table}[htb]
+  \centering
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    $i$ & $d_i$ &
+    \begin{tabular}{c}
+    Norma skutečné\\chyby $\Vert \delta_{wi} \Vert$y \end{tabular} &
+    \begin{tabular}{c}
+    Odhad $\Vert \delta_{wi}\Vert$ podle\\(9.11)\end{tabular} \\
+    \hline
+    1  &  2,1~.~10\TS{0~}  &  1,0~.~10\TS{-6}  &  0,5~.~10\TS{-6} \\
+    2  &  2,1~.~10\TS{-2}  &  0,9~.~10\TS{-6}  &  0,9~.~10\TS{-6} \\
+    3  &  2,2~.~10\TS{-4}  &  0.9~.~10\TS{-2}  &  1,9~.~10\TS{-2} \\
+         \hline
+  \end{tabular}\\[1.5ex]
+  Tab. 10.6 ~~Normy chyb při užití selektivní varianty
+\end{table}
+
+
+Z tabulek (10.5) a (10.6) je patrno, že v obou případech
+odpovídají odhady chyb poměrně přesně skutečnosti.%
+\footnote{
+   Skutečné chyby jsou u některých vektorů poněkud vyšší než
+   \uv{meze} (9.11) a (9.31). Nebyl totiž pro jednoduchost
+   respektován rozdíl mezi vstupní normalizací dělením normou
+   %
+   $\Vert a_i \Vert_\infty$
+   %
+   užívaným procedurou ORTON3 a dělením normou $\Vert a_i \Vert$,
+   předpokládaným při odvození nerovností (9.11) a (9.31) --
+   viz též (9.36).
+}
+%
+Ukázali jsme tak zejména, že \Xemph{při užití sekvenční varianty
+ortogonalizačního algoritmu může být orakticky dosaženo řádu chyby
+stanoveného vzorcem} (9.11). Zkusíme ještě, k jakým závěrům by vedla
+aplikace vzorce (9.31) odvozeného pro selektivní variantu na případ
+sekvenční; jinými slovy zkusíme posoudit normu chyby
+$\Vert \delta_{wi}\Vert$ podle délky $d_i$ určené procedurou
+ORTON3. Užijeme-li \orig{95} hodnot z tab. 10.5, bude např. pro $i=3$
+%
+\begin{align*}
+\tag{10.6}
+2^2 .\; d_3^{-1} .\; \Vert \delta_a \Vert = 1,8\;.\; 10^{-4}.
+\end{align*}
+%
+Srovnání s hodnotou normy skutečné chyby
+%
+$\Vert \delta_{w3} \Vert = 0,8 . 10^{-2}$
+%
+ukazuje, že takový postup může obecně vést k řádovému
+podcenění chyby a je proto nepřípustný.
+
+
+\Subsubsection{B} Druhým příkladem budeme ilustrovat případ zcela odlišných
+vlastností, kde řád chyby sekvenční varianty zdaleka nedosáhne
+mezí daných vzorcem (9.11). Navíc se ukáže, že na rozdíl od
+předcházející úlohy nebude skutečná chyba řádově větší než mez
+užívaná u selektivní varianty.
+
+Náš příklad patří mezi úlohy z oboru aproximace funkčních
+vztahů, které jak jsme viděli v kap. 4, zpravidla večou ke
+špatně podmíněným soustavám normálních rovnic. Konkrétně se budeme
+zabývat maticí $A(11 \times 11)$, která vznikne při hledání polynomu
+desátého stupně, nabývajícího předem daných hodnot v jedenácti
+ekvidistantně rozložených bodech intervalu $<0, 1>$. Snadno se
+přesvědčíme, že platí
+%
+\begin{align*}
+\tag{10.7} A =
+\left[
+\begin{array}{ccccc}
+1 & 0            & 0              &  \ldots & 0 \\
+1 & 1\;.\;10^{-1} & ~1\;.\;10^{-2}  & \ldots & ~1\;.\;10^{-10} \\
+1 & 2\;.\;10^{-1} & 2^2\;.\;10^{-2} & \ldots & 2^{10}.10^{-10} \\
+\vdots & \vdots & \vdots &   & \vdots\\
+1 & 9\;.\;10^{-1} & 9^2\;.\;10^{-2} & \ldots & 9^{10}.10^{-10} \\
+1 & 1            & 1              &  \ldots & 1 \\
+\end{array}
+\right].
+\end{align*}
+
+\noindent
+Je možno ukázat, že sloupce $w_i$ $(i=1,2,\ldots,11)$, vzniklé
+ortogonalizací odpovídajících sloupců $a_i$ matice $A$ (10.7), jsou
+teoreticky tvořeny funkčními hodnotami polynomů ortonormálních na
+zmíněné množině bodů. Pro posouzení přesnosti ortogonalizace stačí
+tedy porovnat numericky získané vektory $w_i$ s korespondujícími údaji
+např. v již citovaných tabulkách [54].
+
+Skutečné chyby posledních šesti vektorů $w_i$ vypočtených
+procedurou \orig{96} ORTON3 sekvenční formou ortogonalizačního
+algoritmu, charakterizuje tab. 10.7. V tabulce jsou rovněž uvedeny
+odhady norem chyb, počítané ze vzorce (9.11), kde bylo v souladu s
+velikostí relativní zaokrouhlovací chyby počítače ELLIOTT 503 položeno
+$\Vert \delta_a \Vert = 2\,.\,10^{-9}$.\footnote{
+Při výpočtu mezí v posledním sloupci tab. 10.7 byly
+potřebné součiny $\prod_{j=1}^id_j$ ve vzorci (9.11) aproximovány součiny
+experimentálně zjištěných hodnot NORM [i], tištěných počítačem
+(kap.12). Při studiu úlohy se ukázalo, že součiny $\prod_{j=1}^id_j$
+dobře aproximuje i analytický výraz
+%
+$\left\{ \det H_i \;.\; \prod_{j=1}^i (2j - 1)\right\}^{1\over2}$,
+%
+kde $\det H_i$ je determinant segmentu $H_i$ \name{HILBERTOVY} matice,
+tvořeného jejími $i$ prvními sloupci a řádky.
+}
+
+\begin{table}[htb]
+  \centering
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    $i$ & $d_i$ &
+    \begin{tabular}{c}
+    Norma skutečné\\chyby $\Vert \delta_{wi} \Vert$y \end{tabular} &
+    \begin{tabular}{c}
+    Odhad $\Vert \delta_{wi}\Vert$ podle\\(9.11)\end{tabular} \\
+    \hline
+    6  &  5,0~.~10\TS{-3}  &  9,0~.~10\TS{-7}  &  4,9~.~10\TS{-4}\TS{~*)} \\
+    7  &  1,2~.~10\TS{-3}  &  6,0~.~10\TS{-6}  &  4,1~.~10\TS{-1}\TS{~~~} \\
+    8  &  2,5~.~10\TS{-4}  &  2,7~.~10\TS{-5}  &    > 1 \\
+    9  &  4,6~.~10\TS{-5}  &  1,2~.~10\TS{-4}  &    > 1 \\
+   10  &  7,4~.~10\TS{-6}  &  5,9~.~10\TS{-4}  &    > 1 \\
+   11  &  8,4~.~10\TS{-7}  &  6,1~.~10\TS{-4}  &    > 1 \\
+         \hline
+  \end{tabular}\\[1.5ex]
+  Tab. 10.7 ~~~ \TS{*)} je $\prod_{j=1}^5 d_j = 1,63 \;.\; 10^{-3}$
+\end{table}
+
+
+\noindent
+Z tab. 10.7 je zřejmé, \Xemph{že sekvenční varianta ortogonalizačního
+algoritmu dává v daném případě přesnost řádově mnohem vyšší
+než udává odhad} (9.11), který zde tak ztrácí jakýkoliv praktický
+význam. Skutečná chyba je dokonce menší než mez (9.31), které
+bychom užili, kdyby úloha byla vyřešena selektivním algoritmem.
+Je např. pro $i=8$:
+
+\begin{align*}
+\tag{10.8}
+\Vert \delta_{w8} \Vert = 2,7 \;.\; 10^{-5} < 2^7.\;d_8^{-1} =
+1,28 \;.\; 10^2 \;.\; 0,4\;.\;10^4 .\; 2\;.\;10^{-9} \approx 10^{-3}.
+\end{align*}
+
+
+
+Shrneme-li výsledky obou experimentů, docházíme k poznání,
+že \Xemph{při užití sekvenční varianty ortogonalizačního algoritmu
+mohou nastat dvě extrémní alternativy}:
+
+\begin{enumerate}[label=\alph*)]
+
+\item \Xemph{odhad normy chyby podle vzorce} (9.1) \Xemph{může vést k
+vysokému přecenění velikosti chyby} (příklad B),
+
+\item \Xemph{případné užití vzorce} (9.31) \Xemph{může přinést podcenění
+velikosti chyby} (příklad A).
+
+\end{enumerate}
+
+Z tohoto \orig{97} hlediska se proto jeví jako účelné užívat pro řešení
+špatně podmíněných úloh selektivní varianty ortogonalizačníno
+algoritmu, pokud chybí bližší informace o stavbě
+ortogonalizované matice $A$.
+
+
+
+}%\newcommand{\TS}[1]{\textsuperscript{#1}}

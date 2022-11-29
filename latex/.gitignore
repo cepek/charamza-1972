@@ -1,0 +1,8 @@
+charamza-1972.pdf
+*.aux
+*.log
+*.pdf
+*.toc
+*.dvi
+*.sh
+*~

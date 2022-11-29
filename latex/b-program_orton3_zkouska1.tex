@@ -1,0 +1,95 @@
+\orig{156}
+%\lstloadlanguages{[60]Algol}
+\begin{lstlisting}[mathescape]
+ORTON3 - ZKOUSKA;
+begin
+integer m1,nz,m2,n1,n2,defect,type,e,e1,c,m,n,i,j,k;
+real tol1,tol2,magn,v; switch SS:=LAB;
+LAB: read m1,nz,m2,n1,n2,defect,type,e,c,tol1,tol2,magn;
+     m:=m1+nz+m2; n:=n1+n2; e1:=e*n1;
+begin comnent block;
+boolean change; integer array INDEX[1:n+defect]; array CORREL[1:n1+defect];
+comment CBS: backing store; array A[1:m+defect+e1,1:n+defect];
+
+procedure readmx(A,m,n,transp);
+value m,n; integer m,n; array A; boolean transp;
+begin integer i,j;
+   for i:=1 step 1 until m do
+      for j:=1 step 1 until n do if transp then read A[j,i] else read A[i,j]
+end readmx;
+
+procedure TISKMAT(A,m,n,B);
+value m,n; integer m,n; array A; boolean B;
+comment TISKMAT tiskne na rychlotiskarne matici typu (mxn) ulozenou
+   v dvojrozmernem poli A. Matice se tiskne po submaticich typu (50x5).
+   Poradi tisku submatic - po radcich. Pri B=true se kazda submatice
+   tiskne na novou stranku, pri B=false nikoliv;
+begin
+      integer i,i1,imax,j,j1,jmax,startm,maxm,startn,maxn;
+      punch(4);
+      imax:=(m-1) div 50+1; jmax:=(n-1) div 5+1;
+      for i:=1 step 1 until imax do
+      begin startn:=30*i-49;
+            maxm:=if 50*i>m then m else 50*i;
+            for j:=1 step 1 until jmax do
+            begin startn:=5*j-4;
+                  maxn:=if 5*j>n then n else 5*j; print $\GBPP$L??;
+                  if B then topofform; print $\GBPP$11S4??;
+                  for i:=startn step 1 until maxn do
+                       print prefix($\GBPP$S16??),digite(3),i1;
+                  print $\GBPP$L??;
+                  for i1:=startm step i until maxm do
+                  begin print digits(9),i1;
+                        for j1:=startn step 1 until maxn do
+                              for prefix($\GBPP$S3??),scaled(9),A[i1,j1];
+                  end i1;
+            end j;
+      end i;
+      print $\GBPP$L??;
+end TISKMAT;
+\end{lstlisting}
+\orig{157}
+\begin{lstlisting}[mathescape]
+comment Na tomto miste je treba deklarovat proceduru ORTON3 - viz priloha 2;
+if type=1 then readmx(A,n,m,true) else readmx(A,m,n,false);
+for i:=m+1 step 1 until m+e1 do
+begin
+      for j:=1 step 1 until n do A[i,j]:=0.0;
+      A[i,i-m]:=1.0;
+end i;
+m2:=m2+e1; change:=c=1;
+ORTON3(A,m1,nz,m2,n1,n2,defect,tol1,tol2,magn,change,INDEX);
+TISKMAT(A,m1+nz+m2,n1+n2,true);
+punch(4); topofform; print $\GBPP$15?COLUMN SEQUENCE$\GBP$1??;
+for i:=1 step 1 until n1+n2 do
+begin if i=ni+1 then print $\GBPP$1??; print digits(3),i,prefix($\GBP$s3??),
+                                        INDEX[i] end;
+if type=i then
+for i:=m1+nz+1 step 1 until m do
+begin print $\GBPP$1??; topofform;
+      print $\GBPP$15s3?PROBLEM NO.:?,sameline,digits(3),i-mi=nz,
+            $\GBPP$1s3?RESIDUAL ERRORSE1??; >
+      for j:=1 step 1 until n1 do CORREL[j]:=A[i,j];
+      for j:=1 step 1 until m1 do
+      begin v:=0.0;
+            for k:=nz+1 step 1 until n1 do v:=v+A[j,k]*CORREL[k];
+            print digits(3),j,prefix($\GBPP$s2??),scaled(9),-v
+      end j;
+      if nz$\ne$o then
+      begin print $\GBPP$1??; topofform;
+            print $\GBPP$15s3?PROBLEM NO.:?,sameline,digits(3),i-m1-nz,
+                  $\GBPP$1s3?UNKNOWNS$\GBP$1??;
+            for j:=m1+1 step 1 until m1+nz do
+            begin v:=0.0;
+                  for k:=1 step 1 until n1 do v:=v+A[j,k]*CORREL[k];
+                  print digits(3),j-m1,prefix($\GBPP$s2??),scaled(9),-v
+            end j;
+      end nz;
+end i;
+print $\GBPP$1??
+end block; wait; goto LAB
+end ZKOUSKA 1;
+
+
+
+\end{lstlisting}

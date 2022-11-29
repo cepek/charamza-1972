@@ -1,0 +1,111 @@
+% viz program_orton3_zkouska1.tex :
+%
+% \input{zkouska1_zprostredkujici.tex}
+% \input{zkouska1_zprostredkujici_s_podminkami.tex}
+% \input{zkouska1_podminkova.tex}
+% \input{zkouska1_podminkova_s_neznamymi.tex}
+%
+% -----------------------------------------------------------
+
+\section*{Vyrovnaní podmínkových pozorování}
+
+\begin{Example}{Formulace úlohy}
+\begin{align*}
+\arraycolsep=3pt
+\begin{array}{rrrrrrrrrrrrr}
+   2v_1 &+&  8v_2 &+& 3v_3 &+& 20v_4 &+& 20v_5 &+& 1 &=& 0 \\
+   4v_1 &+& 12v_2 &+& 4v_3 &+& 25v_4 &+& 24v_5 &-& 2 &=& 0 \\
+   2v_1 &+&  8v_2 &+& 3v_3 &+& 10v_4 &+&  4v_5 &+& 3 &=& 0 \\
+   \\
+   \multicolumn{12}{l}
+     {p_1=4\qquad p_2=16\qquad p_3=1\qquad p_4=25\qquad p_5=16} \\
+   \\
+   \multicolumn{13}{l}{
+   \begin{array}{rrrrrrrrrrrrr}
+     g_1  &=& 6v_1 &+& 8v_2 &-& v_3 &+&  5v_4 &+& 8v_5 &+& 1\\
+     g_2  &=& 2v_1 & &      & & v_3 &+& 10v_3 &-& 4v_5 &-& 3\\
+   \end{array}}
+\end{array}
+\end{align*}
+\end{Example}
+%
+\orig{135}
+\begin{Example}{Vstupní data}
+\bgroup\setlength{\abovedisplayskip}{0pt}
+\begin{align*}
+\begin{array}{ll}
+\begin{array}{rrrrrrrrr}
+  5 &  0 & 1 & 3 & 2 & 0 & 1 & 0 & 0 \\
+  \multicolumn{4}{l}{0.1 ~~ 10^{-6} ~~ 1}\\
+\end{array}\\
+\\
+\begin{array}{rrrrr|r}
+1 & ~~2 & ~~3 &  ~~4 & ~~5 & 1 \\
+2 & 3 & 4 &  5 & 6 &-2 \\
+1 & 2 & 3 &  2 & 1 & 3 \\
+\hline
+3 & 4 &-1 &  1 & 2 & 1 \\
+1 & 0 & 1 &  2 &-1 &-3 \\
+\end{array}
+\end{array}% ... {ll}
+\end{align*}
+\egroup
+\end{Example}
+
+\begin{Example}{Matice W}
+\begin{align*}
+\arraycolsep=3pt
+\begin{array}{rrr|rr}
+0,134840 &  0,762770 & -0,478091 & -0,314286 &  0,457143 \\
+0,269680 &  0,476731 &  0,119523 &  0,628572 & -0,914286 \\
+0,404520 &  0,190602 &  0,717137 & -0,428571 & -0,285714 \\
+0,539360 & -0,095346 &  0,119523 &  0,228572 &  1,485714 \\
+0,674200 & -0,381385 & -0,478091 & -0,114286 & -0,742857 \\
+\hline
+0,134840 & -3,432465 &  5,019960 & 22,000000 & -4,000000 \\
+\end{array}
+\end{align*}
+\end{Example}
+
+\Label{Opravy}
+%
+$v_i = p_i^{-{1\over2}}\dot v_i \qquad (i=1,2,\ldots,5)$ ,
+
+\smallskip
+\noindent
+kde $\dot v_i$ značí opravy tištěné pod ozančením
+\uv{RESIDUALS ERRORS} (příl. E);
+
+$v_1 = 2,500000,\quad v_2=0,250000,\quad v_3=-3,000000,\
+v_4=-0,200000, v_5=0,250000$ .
+
+\Label{Funkce vyrovnaných veličin} $\quad g_i = w_{6,3+i} \qquad (i=1,2)$
+
+\smallskip
+$g_1 = 22,000000 \qquad g_2=-4,000000$ .
+
+\Label{Váhové koeficienty}
+
+$q_{L_iL_j} = (p_i p_j)^{-{1\over2}}\
+(\delta_{ij} - \sum_{k=1}^3 w_{ik}w_{jk}), \
+\quad (i,j=1,2,\ldots,5)$,
+~ kde $\delta_{ij}$ je \name{KRONECKEROVO} delta;
+
+\smallskip
+$v_1=2,500000,\quad v_2=0,250000,\quad v_3=-3,000000,\
+\quad v_5=0,250000$ .
+
+\smallskip
+~~~např. $q_{L_2L_2} = 0,042857 \qquad q_{L_3L_5} = 0,035714$ ,
+
+\smallskip
+$q_{L_ig_j} = p_i^{-{1\over2}} w_{i,3+j} \qquad (i=1,2,\ldots,5),\
+\quad(j=1,2)$
+
+\orig{136}
+~~~např. $q_{L_3g_1} = -0,428571$ ,
+
+$q_{g_ig_j} = \sum_{k=1}^5 w_{k,3+1} w_{k,3+j} \qquad (i,j=1,2)$
+
+\smallskip
+~~~např. $q_{g_1g_1} = 0,742858 \qquad q_{g_1g_2} = -0,171429$ .
