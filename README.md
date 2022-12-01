@@ -2,6 +2,7 @@
 
 ## František Charamza, Praha 1972
 
+[PDF format](https://github.com/cepek/charamza-1972/blob/main/charamza-1972.pdf)
 
 ###  Abstract
 
