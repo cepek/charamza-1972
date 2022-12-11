@@ -1,0 +1,80 @@
+% digitalizace https://yangcha.github.io/iview/iview.html
+%
+\begin{tikzpicture}[xscale=10,yscale=-10]
+
+  \draw (0.060,0.505) -- (0.904,0.505);
+  \draw (0.060,0.505) -- (0.060,0.031+0.040);  % mírně zkrácena svislá osa
+
+  \draw (0.034,0.057+0.040) node {$p$};
+  \foreach \y in {0,...,5}
+  {
+    \draw (0.034,0.505-\y*0.068) node {\tiny \y};
+    \ifnum \y>0
+    \draw (0.060,0.505-\y*0.068)--(0.050,0.505-\y*0.068);
+    \fi
+  }
+
+  \def\dc{0.0030}
+
+  \begin{scope}
+    \coordinate (A) at (0.157,0.501);   % neznámé
+    \coordinate (B) at (0.264,0.439);
+    \coordinate (C) at (0.365,0.298);
+    \coordinate (D) at (0.465,0.378);
+    \coordinate (E) at (0.569,0.450);
+    \coordinate (F) at (0.667,0.564);
+
+    \draw (A)--(B)--(C)--(D)--(E)--(F);
+
+    \draw[fill=white] (A) circle (\dc);
+    \draw[fill=white] (B) circle (\dc);
+    \draw[fill=white] (C) circle (\dc);
+    \draw[fill=white] (D) circle (\dc);
+    \draw[fill=white] (E) circle (\dc);
+    \draw[fill=white] (F) circle (\dc);
+
+    \draw (0.485,0.412) node{$p_x$};
+  \end{scope}
+
+  \begin{scope}
+    \coordinate (A) at (0.157,0.484);   % opravy
+    \coordinate (B) at (0.264,0.420);
+    \coordinate (C) at (0.365,0.279);
+    \coordinate (D) at (0.465,0.353);
+    \coordinate (E) at (0.569,0.435);
+    \coordinate (F) at (0.667,0.536);
+
+    \draw[dashed] (A)--(B)--(C)--(D)--(E)--(F);
+
+    \draw[fill=white] (A) circle (\dc);
+    \draw[fill=white] (B) circle (\dc);
+    \draw[fill=white] (C) circle (\dc);
+    \draw[fill=white] (D) circle (\dc);
+    \draw[fill=white] (E) circle (\dc);
+    \draw[fill=white] (F) circle (\dc);
+
+    \draw (0.500,0.345) node{$p_v$};
+  \end{scope}
+
+  \draw[dashed] (0.699,0.136) -- (0.797,0.136);
+  \draw (0.887,0.139) node{\small opravy $v$};
+  \draw (0.699,0.178) -- (0.797,0.178);
+  \draw (0.902,0.174) node{\small neznámé $x$};
+
+  \def\dx{0.660/13}
+  \foreach \x in {3,4,5,6,7,8,9,10,12,13}
+  {
+    \draw (0.060+\x*\dx,0.505)--(0.060+\x*\dx,0.505-0.009);
+  }
+  \foreach \x in {1,6,11}
+  {
+    \draw (0.060+\x*\dx,0.505)--(0.060+\x*\dx,0.505-0.015);
+  }
+  \draw (0.060+ 1*\dx,0.525) node{\tiny +5};
+  \draw (0.060+ 6*\dx,0.525) node{\tiny  0};
+  \draw (0.060+11*\dx,0.525) node{\tiny -5};
+
+  \draw (0.843,0.532) node {$\log_{10}\varepsilon$};
+\end{tikzpicture}
+
+%

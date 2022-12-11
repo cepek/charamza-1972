@@ -31,8 +31,7 @@ Takto deformovaný vektor$\widetilde w_i$ pak obecně nemusí plně
 vyhovovat žádnému ze dvou požadavků, podle nichž byl konstruován:
 nemusí splňovat podmínky ortogonality k vektorům $w_j (j<i)$ a nemusí
 ležet v prostoru $E_i (a_1, a_2, \dots, a_i)$.
-
-
+%
 Jak se zdá, lze jednoduchým způsobem odstranit
 pouze první z uvedených nedostatků postupem, který je z lineární
 algebry znám pod pojmem doortogonalizace
@@ -50,7 +49,7 @@ algebry znám pod pojmem doortogonalizace
 Mějme soustavu ortonormálních vektorů $w_1,w_2,\dots,w_{i-1}$. K těmto
 vektorům budeme Gra\-mo\-vým--Schmidtovým postupem ortogonalizovat
 vektor $a_i$.  Nechť $\widetilde w_i$ je vektor vzniklý exaktní
-ortogonalizací a $a_i$ podle (2. 12). \orig{51} Výsledkem numericky
+ortogonalizací $a_i$ podle ($2.1_2$). \orig{51} Výsledkem numericky
 provedené ortogonalizace je pak vektor $\widetilde w'_i$ zatížený
 chybou $\varphi'_i$
 %
@@ -124,7 +123,7 @@ anulovat chybu $\varphi_i''$.
 
 
 \Xemph{Věta 1. Leží-li vektor chyby $\varphi_i'$ v prostoru $E_i$
-  vytvářeném ortonormálními vektory $w_1,w2,\dots,w_i$, pak přínos
+  vytvářeném ortonormálními vektory $w_1,w_2,\dots,w_i$, pak přínos
   doortogonalizace je maximální. Odpovídající chyba $\varphi_i''$
   korigovaného vektoru $\widetilde w''_i$ je po jeho normalizaci
   nulová}.
@@ -211,7 +210,7 @@ ilustrovat příkladem ortogonalizace vektoru
 %
 $ \underline a$ ~ \OA ~ k vektoru $w_1$
 %
-v trojrozměrném prostoru. V souladu se zavejenou symbolikou budeme
+v trojrozměrném prostoru. V souladu se zavedenou symbolikou budeme
 značit
 
 \vspace{1ex}
@@ -247,7 +246,8 @@ sestrojit rovnoběžku s $w_1$ a najít její průsečík s rovinou $\pi_1$.
 \orig{54}
 
 \begin{figure}\centering
-\includegraphics[width=0.75\textwidth]{obr_6.1.png}
+%\includegraphics[width=0.75\textwidth]{obr_6.1.png}
+\input{obr_6.1.tex}
 %
 \label{6.1.}
 \caption{Princip doortogonalizace -- vektor chyby $\varphi'$ má
@@ -257,7 +257,8 @@ $(\Vert\varphi''\Vert < \Vert\varphi'\Vert)$.}
 \end{figure}
 
 \begin{figure}\centering
-\includegraphics[width=0.75\textwidth]{obr_6.2.png}
+%\includegraphics[width=0.75\textwidth]{obr_6.2.png}
+\input{obr_6.2.tex}
 %
 \label{6.2.}
 \caption{Maximální přínos doortogonalizace -- vektor $\varphi'$ leží
@@ -267,7 +268,8 @@ $(\Vert\varphi''\Vert < \Vert\varphi'\Vert)$.}
 \end{figure}
 
 \begin{figure}\centering
-\includegraphics[width=0.75\textwidth]{obr_6.3.png}
+%\includegraphics[width=0.75\textwidth]{obr_6.3.png}
+\input{obr_6.3.tex}
 %
 \label{6.3.}
 \caption{Minimální přínos doortogonalizace -- vektor $\varphi'$ leží
@@ -322,7 +324,7 @@ a po dosazení do (6.3)
 %
 \begin{align*}
   \tag{6.16}
-  \varphi_i\,'' = -WW^T \_varphi_{i1} + \varphi_i\,'
+  \varphi_i\,'' = -WW^T \varphi_{i1} + \varphi_i\,'
   = - WW^TW\beta + \varphi_{i1} + \varphi_{i2}
   = -W\beta + W\beta + \varphi_{i2} = \varphi_{i2} \Punc{.}
 \end{align*}
@@ -669,7 +671,8 @@ téhož vektoru na podprostor tvořený vektory
 $w_{i+1},w_{i+2},\dots,w_m$ (obr. 6.4).
 %
 \begin{center}
-\includegraphics[width=0.5\textwidth]{obr_6.4.png}\\
+%\includegraphics[width=0.5\textwidth]{obr_6.4.png}\\
+\input{obr_6.4.tex}
 Obr. 6.4
 \end{center}
 %

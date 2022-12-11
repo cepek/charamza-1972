@@ -1,0 +1,105 @@
+% digitalizace https://yangcha.github.io/iview/iview.html
+%
+\begin{tikzpicture}[xscale=10,yscale=-10]
+
+  \begin{scope}   % osy
+    \def\zx{0.060};
+    \def\zy{0.720};
+    \coordinate (Z) at (\zx,\zy);
+    \draw (Z) -- (1.028,\zy);
+    \draw (Z) -- (\zx,0.033);
+
+    \draw (0.035,0.060) node {$p$};
+    \draw (1.030,0.745) node {$\log_{10}\varepsilon$};
+
+    \def\dy{0.563/8}; % (\zy-0.157)/8
+    \foreach \y in {0,...,8}
+    {
+      \def\tmp{\zy-\y*\dy};
+      \draw (\zx-0.030,\tmp) node {\tiny \y};
+      \ifnum \y>0
+      \draw (\zx-0.010,\tmp)--(\zx,\tmp);
+      \fi
+    }
+
+    \def\dx{0.884/17};
+    \foreach \x in {3,4,5,7,8,9,10,12,13,14,15,17}
+    {
+      \def\tmp{\zx + \dx*\x};
+      \draw (\tmp, \zy) -- (\tmp,  \zy-0.005);
+    }
+    \foreach \x in {1,6,11,16}
+    {
+      \def\tmp{\zx + \dx*\x};
+      \draw (\tmp, \zy) -- (\tmp,  \zy-0.010);
+
+      \ifnum \x=1
+         \draw (\tmp,\zy+0.020) node{\tiny +5};
+      \fi
+      \ifnum \x=6
+         \draw (\tmp,\zy+0.020) node{\tiny 0};
+      \fi
+      \ifnum \x=11
+         \draw (\tmp,\zy+0.020) node{\tiny -5};
+      \fi
+      \ifnum \x=16
+         \draw (\tmp,\zy+0.020) node{\tiny -10};
+      \fi
+    }
+
+    \draw[dashed] (0.153,0.068) -- (0.258,0.068);
+    \draw (0.350,0.068) node{\small opravy $v$};
+    \draw (0.153,0.110) -- (0.250,0.110);
+    \draw (0.365,0.109) node{\small neznámé $x$};
+
+  \end{scope}   % osy ----------------------------------
+
+
+  \def\dc{0.0035}
+
+  \begin{scope}
+    \coordinate (A) at (0.168,0.718);   % neznámé
+    \coordinate (B) at (0.273,0.657);
+    \coordinate (C) at (0.374,0.522);
+    \coordinate (D) at (0.480,0.498);
+    \coordinate (E) at (0.579,0.627);
+    \coordinate (F) at (0.684,0.772);
+
+    \draw (A)--(B)--(C)--(D)--(E)--(F);
+
+    \draw[fill=white] (A) circle (\dc);
+    \draw[fill=white] (B) circle (\dc);
+    \draw[fill=white] (C) circle (\dc);
+    \draw[fill=white] (D) circle (\dc);
+    \draw[fill=white] (E) circle (\dc);
+    \draw[fill=white] (F) circle (\dc);
+
+    \draw (0.570,0.560) node{$p_x$};
+  \end{scope}
+
+  \begin{scope}
+    \coordinate (A) at (0.162,0.705);   % opravy
+    \coordinate (B) at (0.272,0.644);
+    \coordinate (C) at (0.374,0.499);
+    \coordinate (D) at (0.478,0.359);
+    \coordinate (E) at (0.582,0.222);
+    \coordinate (F) at (0.689,0.217);
+    \coordinate (G) at (0.785,0.318);
+    \coordinate (H) at (0.887,0.461);
+
+    \draw[dashed] (A)--(B)--(C)--(D)--(E)--(F)--(G)--(H);
+
+    \draw[fill=white] (A) circle (\dc);
+    \draw[fill=white] (B) circle (\dc);
+    \draw[fill=white] (C) circle (\dc);
+    \draw[fill=white] (D) circle (\dc);
+    \draw[fill=white] (E) circle (\dc);
+    \draw[fill=white] (F) circle (\dc);
+    \draw[fill=white] (G) circle (\dc);
+    \draw[fill=white] (H) circle (\dc);
+
+    \draw (0.855,0.360) node{$p_v$};
+  \end{scope}
+\end{tikzpicture}
+
+%
