@@ -37,3 +37,12 @@ the procedure and the programme can be directly used for
 calculations of adjustment problems on the ELLIOTT 503 computer and,
 after some modifications, on other computers supplied with an
 ALGOL compiler.
+
+## Errata
+
+The text presented here was scanned (see directory /sken), texts from
+PDF images were extracted by [Tesseract
+program](https://github.com/tesseract-ocr/tesseract), math formulas
+written in LaTeX with images in Tikz format. If you find any error or
+typo in the resulting text, please let me know so I can fix it. [Aleš
+Čepek](https://cepek.github.io/)
