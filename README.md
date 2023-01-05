@@ -2,6 +2,9 @@
 
 ## František Charamza, Praha 1972
 
+The text of the original edition was scanned, converted to LaTeX and
+published with permission of the author.
+
 [PDF format](https://github.com/cepek/charamza-1972/blob/main/charamza-1972.pdf)
 
 ###  Abstract
